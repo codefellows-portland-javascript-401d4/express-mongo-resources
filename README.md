@@ -26,8 +26,8 @@
 
 ### How To Use Codebase
   - This module uses Node, npm and the following modules:
-    - net, http, path modules from node
-    - express & mongoose
+    - net, http, fs, path modules from node
+    - express (for node middleware), morgan (for logging), body-parser (for body parsing), mongoose (for database communication)
     - eslint, mocha, chai, chai-http for testing
   - Make sure to run npm install from the directory root to install dependencies
   - Please refer to the package.json for more info
