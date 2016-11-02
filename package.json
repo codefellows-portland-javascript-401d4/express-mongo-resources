@@ -1,0 +1,34 @@
+{
+  "name": "express-mongo-resources",
+  "version": "0.1.0",
+  "description": "Bitmap color transformer",
+  "main": "express-mongo-resources.js",
+  "scripts": {
+    "lint": "eslint **/*.js",
+    "pretest": "npm run lint",
+    "test": "mocha",
+    "build": "npm install",
+    "dev": "npm install --save-dev",
+    "watch": "nodemon --exec mocha",
+    "start": "node ./lib/express-mongo-resources.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markgreenwood/express-mongo-resources.git"
+  },
+  "author": "@markgreenwood",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/markgreenwood/express-mongo-resources/issues"
+  },
+  "homepage": "https://github.com/markgreenwood/express-mongo-resources#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.8.1",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "mongoose": "^4.6.5"
+  }
+}
