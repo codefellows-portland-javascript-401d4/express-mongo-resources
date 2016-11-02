@@ -32,7 +32,9 @@
     "superagent": "^2.3.0"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "mongoose": "^4.6.5"
+    "mongoose": "^4.6.5",
+    "morgan": "^1.7.0"
   }
 }
