@@ -16,7 +16,20 @@ describe('Checks that app properly routes for gamechars', () =>{
         daffyDuck.validate(err => {
             if (err) done(err);
             else done();
+        })    
+    });
+    
+    it('Validates that the name is required', done =>{
+        const missPiggy = new Gamechar({
+            game: 'StageCraft',
+            age: 19,
+            attackpower: 14
         })
-    })
+
+        missPiggy.validate(err => {
+            assert.isOk(err, 'Name is required');
+            done();
+        })    
+    });
 
 })
