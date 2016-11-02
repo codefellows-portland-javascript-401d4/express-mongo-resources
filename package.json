@@ -1,0 +1,38 @@
+{
+  "name": "http-single-server",
+  "version": "1.2.2",
+  "description": "http single-server api",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "pretest": "npm run lint",
+    "lint": "eslint .",
+    "test": "mocha",
+    "test:watch": "npm run test -- -w",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timcombs/http-single-resource"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timcombs/http-single-resource"
+  },
+  "homepage": "https://github.com/timcombs/http-single-resource#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.8.1",
+    "mocha": "^3.1.2",
+    "nodemon": "^1.11.0",
+    "superagent": "^2.3.0"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "mongoose": "^4.6.5"
+  }
+}
