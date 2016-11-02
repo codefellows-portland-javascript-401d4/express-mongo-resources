@@ -30,6 +30,6 @@ describe('Checks that app properly routes for gamechars', () =>{
             assert.isOk(err, 'Name is required');
             done();
         })    
-    });
+    }); 
 
 })
