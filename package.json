@@ -1,15 +1,15 @@
 {
   "name": "express-mongo-resources",
   "version": "0.1.0",
-  "description": "Bitmap color transformer",
+  "description": "Express MongoDB resource server",
   "main": "express-mongo-resources.js",
   "scripts": {
     "lint": "eslint **/*.js",
     "pretest": "npm run lint",
-    "test": "mocha",
+    "test": "MONGODB_URI=mongodb://localhost/riders-test mocha",
     "build": "npm install",
     "dev": "npm install --save-dev",
-    "watch": "nodemon --exec mocha",
+    "test:watch": "MONGODB_URI=mongodb://localhost/riders-test nodemon --exec mocha",
     "start": "node ./lib/express-mongo-resources.js"
   },
   "repository": {
@@ -24,10 +24,13 @@
   "homepage": "https://github.com/markgreenwood/express-mongo-resources#readme",
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "eslint": "^3.8.1",
-    "mocha": "^3.1.2"
+    "mocha": "^3.1.2",
+    "morgan": "^1.7.0"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "mongoose": "^4.6.5"
   }
