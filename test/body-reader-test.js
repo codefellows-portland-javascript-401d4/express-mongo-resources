@@ -12,5 +12,5 @@ describe('unit testing for bodyReader', () => {
     bodyReader(req, null, next);
     req.emit('data', '{"teamName":"Navi"}');
     req.emit('end');
-  })
-})
+  });
+});
