@@ -32,11 +32,34 @@ describe('tests the gamemap api', () => {
         environment: 'shadow'
     };
 
+    it('checks the mean and stdev of the game maps areas are within expected', done => {
+        request
+            .get('/gamemaps/statistics')
+            .then(stats => {
+                const areastats = stats.body.map_stats;
+                assert.equal(areastats.mean, 1000);
+                assert.equal(areastats.sd, 0);
+                done();
+            })
+            .catch(err => {
+                console.error(err);
+                done(err);
+            });
+    });
+
     it('/GETS all resources', done => {
         request
             .get('/gamemaps')
             .then(resource => {
-                assert.deepEqual(resource.body, []);
+                assert.deepEqual(resource.body[0],
+                {
+                    "__v": 0,
+                    "_id": "581b691333fbcd3f2cbc05c7",
+                    "environment": "lake",
+                    "name": "Big Lakes",
+                    "size": 1000,
+                    "unitOfMeasure": "cubits"
+                });
                 done();
             })
             .catch( err => {

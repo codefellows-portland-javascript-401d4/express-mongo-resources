@@ -33,11 +33,29 @@ describe('tests the gamechar api', () => {
         attackpower: 9000
     };
 
-    it('/GETS all resources', done => {
+    it('checks the mean and stdev of the game characters attackpower and age are within expected', done => {
+        request
+            .get('/gamechars/statistics')
+            .then(stats => {
+                const agestats = stats.body.age_stats;
+                const powerstats = stats.body.power_stats;
+                assert.isAtLeast(agestats.mean, 64);
+                assert.isAtLeast(agestats.sd, 110);
+                assert.isAtLeast(powerstats.mean, 375)
+                assert.isAtLeast(powerstats.sd, 360);
+                done();
+            })
+            .catch(err => {
+                console.error(err);
+                done(err);
+            });
+    });
+
+    it('/GETS all resources and make sure correct number is there', done => {
         request
             .get('/gamechars')
             .then(resource => {
-                assert.deepEqual(resource.body, []);
+                assert.equal(resource.body.length, 11);
                 done();
             })
             .catch( err => {
