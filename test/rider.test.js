@@ -6,7 +6,8 @@ describe ('Rider model', () => {
   it ('validates with name and team', (done) => {
     const test_rider = new Rider({
       name: 'Marco Velo',
-      team: 'Francaise de Jeux'
+      team: 'Francaise de Jeux',
+      nationality: 'Italian'
     });
 
     test_rider.validate((err) => {
@@ -16,7 +17,8 @@ describe ('Rider model', () => {
 
   it ('name is required', (done) => {
     const test_rider = new Rider({
-      team: 'Astana'
+      team: 'Astana',
+      nationality: 'German'
     });
 
     test_rider.validate((err) => {
@@ -29,7 +31,8 @@ describe ('Rider model', () => {
   it ('role defaults to domestique', (done) => {
     const test_rider = new Rider({
       name: 'Alexander Vinokourov',
-      team: 'Astana'
+      team: 'Astana',
+      nationality: 'Kazakh'
     });
 
     test_rider.validate((err) => {

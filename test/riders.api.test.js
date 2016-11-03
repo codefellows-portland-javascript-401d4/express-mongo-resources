@@ -37,7 +37,8 @@ describe ('', () => {
   const test_rider = {
     name: 'George Hincapie',
     team: 'HTC',
-    role: 'leader'
+    role: 'leader',
+    nationality: 'American'
   };
 
   it ('POST a rider stores the data and returns the stored object', (done) => {
@@ -81,7 +82,8 @@ describe ('', () => {
   const another_rider = {
     name: 'Mark Cavendish',
     team: 'HTC',
-    role: 'sprinter'
+    role: 'sprinter',
+    nationality: 'Manx'
   };
 
   it ('adds a rider with a different role', (done) => {
