@@ -51,6 +51,19 @@ describe('tests the gamechar api', () => {
             });
     });
 
+    it('checks that we can get a range of characters when passing $gt or $lt or a combination therein for attackpower', done => {
+        request
+            .get('/gamechars?attackpower=500&$gt=50&$lt=600')
+            .then(gamechars => {
+                assert.equal(gamechars.body.length, 4);
+                done();
+            })
+            .catch(err => {
+                console.log(err);
+                done(err);
+            });
+    });
+
     it('/GETS all resources and make sure correct number is there', done => {
         request
             .get('/gamechars')
