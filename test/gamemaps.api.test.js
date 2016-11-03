@@ -28,6 +28,9 @@ describe('tests the gamemap api', () => {
         environment: 'multi',
         size: 100000000
     };
+    const update = {
+        environment: 'shadow'
+    };
 
     it('/GETS all resources', done => {
         request
@@ -57,6 +60,34 @@ describe('tests the gamemap api', () => {
             .catch(err => {
                 console.error(err);
                 done(err);
+            });
+    });
+
+    it('/GETS all hyrule by id', done => {
+        request
+            .get('/gamemaps/' + hyrule._id)
+            .then(resource => {
+                assert.deepEqual(resource.body, hyrule);
+                done();
+            })
+            .catch( err => {
+                console.error(err);
+                done(err);
+            });
+    });
+
+    it('/PUTS new data to hyrule such that environment becomes shadow', done => {
+        request
+            .put('/gamemaps/' + hyrule._id)
+            .send(update)
+            .then(res => {
+                hyrule.environment = 'shadow';
+                assert.deepEqual(res.body, hyrule);
+                done();
+            })
+            .catch(err => {
+                console.error(err);
+                cone(err);
             });
     });
 
