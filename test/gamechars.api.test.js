@@ -29,6 +29,9 @@ describe('tests the gamechar api', () => {
         age: 23,
         attackpower: 219
     };
+    const update = {
+        attackpower: 9000
+    };
 
     it('/GETS all resources', done => {
         request
@@ -51,6 +54,7 @@ describe('tests the gamechar api', () => {
                 const gamechar = res.body;
                 assert.ok(gamechar._id);
                 starfox._id = gamechar._id;
+                starfox.__v = 0;
                 done();
             })
             .catch( err => {
@@ -60,14 +64,38 @@ describe('tests the gamechar api', () => {
     });
 
     it('/GETS starfox', done => {
+        request
+            .get('/gamechars/' + starfox._id)
+            .then( res => {
+                assert.deepEqual(res.body, starfox);
+                done();
+            })
+            .catch( err => {
+                console.log(err);
+                done(err);
+            });
+    });
 
+    it('/PUTS new info on starfox', done => {
+        request
+            .put('/gamechars/' + starfox._id)
+            .send(update)
+            .then(res => {
+                starfox.attackpower = 9000;
+                assert.deepEqual(res.body, starfox);
+                done();
+            })
+            .catch(err => {
+                console.error(err);
+                done(err);
+            });
     });
 
     it('/DELETESs starfox by id', done => {
         request
             .del('/gamechars/' + starfox._id)
             .then( res => {
-                console.log(res);
+                assert.deepEqual(res.body, starfox);
                 done();
             })
             .catch( err => {
