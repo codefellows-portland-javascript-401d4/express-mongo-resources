@@ -12,6 +12,15 @@ describe('the beer routes and models', () => {
 
   const server = chai.request(app);
 
+  before(done => {
+
+    server.delete('/api/beer/Deschutes')
+      .end((err, res) => {
+        if (err) return done(err);
+        done();
+      })
+  });
+
   it('requests beer api and gets results from the db', done => {
 
     const expectedResults = '[{"_id":"581a8d26ca8a26db175663f7","name":"Belmont Station","streetAddress":"4500 SE Stark St","zipcode":97215,"phone":5032328538,"brewery":false,"bestBeer":null,"visited":true},{"_id":"581a8d34ca8a26db175663f8","name":"Lompoc 5th Quadrant","streetAddress":"3901 N Williams Ave","zipcode":97227,"phone":5032883996,"brewery":true,"bestBeer":"Proletariat Red","visited":true},{"_id":"581a8d3dca8a26db175663f9","name":"Laurelwood Public House & Brewery","streetAddress":"5115 NE Sandy Blvd","zipcode":97213,"phone":5032820622,"brewery":true,"bestBeer":"Workhorse IPA","visited":true}]';
@@ -33,6 +42,31 @@ describe('the beer routes and models', () => {
 
     server
       .get('/api/beer/Belmont%20Station') // there's a space in the name
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.equal(res.text, expectedResults);
+        done();
+      });
+
+  });
+
+  it('posts a new brewery to the list, visible in a get all', done => {
+
+    const expectedResults = '[{"_id":"581a8d26ca8a26db175663f7","name":"Belmont Station","streetAddress":"4500 SE Stark St","zipcode":97215,"phone":5032328538,"brewery":false,"bestBeer":null,"visited":true},{"_id":"581a8d34ca8a26db175663f8","name":"Lompoc 5th Quadrant","streetAddress":"3901 N Williams Ave","zipcode":97227,"phone":5032883996,"brewery":true,"bestBeer":"Proletariat Red","visited":true},{"_id":"581a8d3dca8a26db175663f9","name":"Laurelwood Public House & Brewery","streetAddress":"5115 NE Sandy Blvd","zipcode":97213,"phone":5032820622,"brewery":true,"bestBeer":"Workhorse IPA","visited":true}, {"name":"Deschutes","phone":5038675309,"brewery":true,"visited":true}]';
+
+    const Deschutes = {"name":"Deschutes","phone":5038675309,"brewery":true,"visited":true};
+
+    server
+      .post('/api/beer')
+      .send(Deschutes)
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.equal(res.text, 'Deschutes added!');
+        done();
+      });
+
+    server
+      .get('/api/beer')
       .end((err, res) => {
         if (err) return done(err);
         assert.equal(res.text, expectedResults);
