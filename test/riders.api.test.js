@@ -117,4 +117,14 @@ describe ('', () => {
     connection.close(done);
   });
 
+  // TODO: add test for update (e.g. Jan Ullrich gained weight during the off-season)
+  // it ('updates specific rider info given id', (done) => {
+    
+  // });
+
+  // TODO: add test for delete
+  // it ('deletes specific rider given id', (done) => {
+    
+  // });
+
 });
