@@ -27,4 +27,18 @@ describe('the beer routes and models', () => {
   });
 
 
+  it('queries by a brewery name and gets results', done => {
+
+    const expectedResults = '{"_id":"581a8d26ca8a26db175663f7","name":"Belmont Station","streetAddress":"4500 SE Stark St","zipcode":97215,"phone":5032328538,"brewery":false,"bestBeer":null,"visited":true}';
+
+    server
+      .get('/api/beer/Belmont%20Station') // there's a space in the name
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.equal(res.text, expectedResults);
+        done();
+      });
+
+  });
+
 });
