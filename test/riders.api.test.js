@@ -8,6 +8,39 @@ const app = require('../lib/app');
 
 describe ('', () => {
 
+  const test_riders = [
+    {
+      name: 'George Hincapie',
+      team: 'HTC',
+      role: 'leader',
+      nationality: 'American',
+      height: 185,
+      weight: 81
+    },
+    {
+      name: 'Jan Ullrich',
+      team: 'Deutsche Telekom',
+      role: 'GC',
+      nationality: 'German',
+      height: 183,
+      weight: 80
+    },
+    {
+      name: 'Jens Voigt',
+      team: 'Trek',
+      role: 'roleur',
+      nationality: 'German',
+      height: 178,
+      weight: 78
+    },
+    {
+      name: 'Mark Cavendish',
+      team: 'HTC',
+      role: 'sprinter',
+      nationality: 'Manx'
+    }
+  ];
+
   before((done) => {
     const CONNECTED = 1;
     if (connection.readyState === CONNECTED) dropCollection();
@@ -34,23 +67,16 @@ describe ('', () => {
       });
   });
 
-  const test_rider = {
-    name: 'George Hincapie',
-    team: 'HTC',
-    role: 'leader',
-    nationality: 'American'
-  };
-
   it ('POST a rider stores the data and returns the stored object', (done) => {
 
     request
       .post('/api/riders')
-      .send(test_rider)
+      .send(test_riders[0])
       .then((res) => {
         const rider = res.body;
         expect(rider._id).to.be.ok;
-        test_rider.__v = 0;
-        test_rider._id = rider._id;
+        test_riders[0].__v = 0;
+        test_riders[0]._id = rider._id;
         done();
       })
       .catch(done);
@@ -60,9 +86,9 @@ describe ('', () => {
   it ('GET /:id returns the correct rider', (done) => {
 
     request
-      .get(`/api/riders/${test_rider._id}`)
+      .get(`/api/riders/${test_riders[0]._id}`)
       .then((res) => {
-        expect(res.body).to.deep.equal(test_rider);
+        expect(res.body).to.deep.equal(test_riders[0]);
         done();
       })
       .catch(done);
@@ -73,42 +99,71 @@ describe ('', () => {
     request
       .get('/api/riders/')
       .then((res) => {
-        expect(res.body).to.deep.equal( [ test_rider ] );
+        expect(res.body).to.deep.equal( [ test_riders[0] ] );
         done();
       })
       .catch(done);
   });
 
-  const another_rider = {
-    name: 'Mark Cavendish',
-    team: 'HTC',
-    role: 'sprinter',
-    nationality: 'Manx'
-  };
-
-  it ('adds a rider with a different role', (done) => {
+  it ('adds riders with a different roles', (done) => {
 
     request
       .post('/api/riders')
-      .send(another_rider)
+      .send(test_riders[1])
       .then((res) => {
         const new_rider = res.body;
         expect(new_rider._id).to.be.ok;
-        another_rider.__v = 0;
-        another_rider._id = new_rider._id;
+        test_riders[1].__v = 0;
+        test_riders[1]._id = new_rider._id;
+        console.log('Jan\'s ID: ', test_riders[1]._id);
         done();
       })
       .catch(done);
 
   });
 
-  it ('returns only riders who are sprinters', (done) => {
+  it ('returns only riders who are GC', (done) => {
     request
       .get('/api/riders')
-      .query({ role: 'sprinter' })
+      .query({ role: 'GC' })
       .then((res) => {
-        expect(res.body[0].name).to.equal('Mark Cavendish');
+        const first_rtnd = res.body[0];
+        expect(first_rtnd.name).to.deep.equal('Jan Ullrich');
         done();
+      })
+      .catch(done);
+  });
+
+  it ('updates specific rider info given id', (done) => {
+    request
+      .put(`/api/riders/${test_riders[1]._id}`)
+      .send({ weight: 90 })
+      .then(() => {
+        request
+          .get(`/api/riders/${test_riders[1]._id}`)
+          .then((res) => {
+            expect(res.body.weight).to.equal(90);
+            done();
+          })
+          .catch(done);
+      })
+      .catch(done);
+  });
+
+  it ('deletes specific rider given id', (done) => {
+    request
+      .delete(`/api/riders/${test_riders[1]._id}`)
+      .then((res) => {
+        console.log('res.status after DELETE is ', res.statusCode);
+        request
+          .get(`/api/riders/${test_riders[1]._id}`)
+          .then((res) => { // eslint-disable-line no-unused-vars
+            done('Should have generated a 404 error');
+          })
+          .catch((err) => {
+            expect(err.response.status).to.equal(404);
+            done();
+          });
       })
       .catch(done);
   });
@@ -116,15 +171,5 @@ describe ('', () => {
   after((done) => {
     connection.close(done);
   });
-
-  // TODO: add test for update (e.g. Jan Ullrich gained weight during the off-season)
-  // it ('updates specific rider info given id', (done) => {
-    
-  // });
-
-  // TODO: add test for delete
-  // it ('deletes specific rider given id', (done) => {
-    
-  // });
 
 });
