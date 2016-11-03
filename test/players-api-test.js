@@ -9,7 +9,7 @@ const connection = require( '../lib/setup-mongoose' );
 
 const app = require( '../lib/app' );
 
-describe( 'pirate api', () => {
+describe( 'player api', () => {
 
   before( done => {
     const CONNECTED = 1;
@@ -17,7 +17,7 @@ describe( 'pirate api', () => {
     else connection.on('open', dropCollection);
 
     function dropCollection(){
-      const name = 'pirates';
+      const name = 'players';
       connection.db
 				.listCollections({ name })
 				.next( (err, collinfo) => {
@@ -29,14 +29,14 @@ describe( 'pirate api', () => {
 
   const request = chai.request( app );
 
-  const luffy = {
-    name: 'Monkey D Luffy',
-    rank: 'captain'
+  const davis = {
+    name: 'Ryon Healy',
+    team: 'Athletics'
   };
 
   it( '/GET all', done => {
     request
-			.get( '/api/pirates' )
+			.get( '/api/players' )
 			.then( res => {
   assert.deepEqual( res.body, [] );
   done();
@@ -46,13 +46,13 @@ describe( 'pirate api', () => {
 
   it( '/POST', done => {
     request
-			.post( '/api/pirates' )
-			.send( luffy )
+			.post( '/api/players' )
+			.send( davis )
 			.then( res => {
-  const pirate = res.body;
-  assert.ok( pirate._id );
-  luffy.__v = 0;
-  luffy._id = pirate._id;
+  const player = res.body;
+  assert.ok( player._id );
+  davis.__v = 0;
+  davis._id = player._id;
   done();
 })
 			.catch( done );
@@ -61,10 +61,10 @@ describe( 'pirate api', () => {
 
   it( '/GET by id', done => {
     request
-			.get( `/api/pirates/${luffy._id}` )
+			.get( `/api/players/${davis._id}` )
 			.then( res => {
-  const pirate = res.body;
-  assert.deepEqual( pirate, luffy );
+  const player = res.body;
+  assert.deepEqual( player, davis );
   done();
 })
 			.catch( done );
@@ -72,18 +72,18 @@ describe( 'pirate api', () => {
 
   it( '/GET all after post', done => {
     request
-			.get( '/api/pirates' )
+			.get( '/api/players' )
 			.then( res => {
-  assert.deepEqual( res.body, [ luffy ] );
+  assert.deepEqual( res.body, [ davis ] );
   done();
 })
 			.catch( done );
   });
 
-  it( 'add a non-captain pirate', done => {
+  it( 'add a non-Athletics player', done => {
     request
-			.post( '/api/pirates' )
-			.send({ name: 'zoro', rank: 'swordsman' })
+			.post( '/api/players' )
+			.send({ name: 'Kris Bryant', team: 'Cubs' })
 			.then( res => {
   assert.ok( res.body._id );
   done();
@@ -91,18 +91,18 @@ describe( 'pirate api', () => {
 			.catch( done );
   });
 
-  it( '/GET where rank is captain', done => {
+  it( '/GET where team is Athletics', done => {
     request
-			.get( '/api/pirates' )
-			.query({ rank: 'captain' })
+			.get( '/api/players' )
+			.query({ team: 'Athletics' })
 			.then( res => {
-  assert.deepEqual( res.body, [ luffy ] );
+  assert.deepEqual( res.body, [ davis ] );
   done();
 })
 			.catch( done );
   });
 	
-//  1) pirate api "after all" hook:
+//  1) player api "after all" hook:
 //      Error: Resolution method is overspecified. Specify a callback *or* return a Promise; not both.
 
   // after( done => connection.close( done ) );
