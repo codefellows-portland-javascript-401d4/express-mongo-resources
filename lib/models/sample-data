@@ -3,9 +3,14 @@
     "rank": "Captain",
     "age": 50
 }
-
 {
     "name": "Crusher",
     "rank": "Ensign",
     "age": 18
+}
+
+{
+    "name": "Worf",
+    "rank": "Lieutenant",
+    "age": 26
 }
