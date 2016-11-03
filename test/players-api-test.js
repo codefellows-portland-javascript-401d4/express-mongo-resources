@@ -1,3 +1,5 @@
+//teams-api parallels players-api (for now) so separate testing not needed
+
 const chai = require( 'chai' );
 const chaiHttp = require( 'chai-http' );
 const assert = chai.assert;
@@ -29,9 +31,17 @@ describe( 'player api', () => {
 
   const request = chai.request( app );
 
-  const davis = {
+  const healy = {
     name: 'Ryon Healy',
-    team: 'Athletics'
+    team: 'Athletics',
+    homers: 13
+  };
+
+  //he will be used to prove homer leader sort at end
+  const bryant = {
+    name: 'Kris Bryant',
+    team: 'Cubs',
+    homers: 39
   };
 
   it( '/GET all', done => {
@@ -47,12 +57,12 @@ describe( 'player api', () => {
   it( '/POST', done => {
     request
 			.post( '/api/players' )
-			.send( davis )
+			.send( healy )
 			.then( res => {
   const player = res.body;
   assert.ok( player._id );
-  davis.__v = 0;
-  davis._id = player._id;
+  healy.__v = 0;
+  healy._id = player._id;
   done();
 })
 			.catch( done );
@@ -61,10 +71,10 @@ describe( 'player api', () => {
 
   it( '/GET by id', done => {
     request
-			.get( `/api/players/${davis._id}` )
+			.get( `/api/players/${healy._id}` )
 			.then( res => {
   const player = res.body;
-  assert.deepEqual( player, davis );
+  assert.deepEqual( player, healy );
   done();
 })
 			.catch( done );
@@ -74,7 +84,7 @@ describe( 'player api', () => {
     request
 			.get( '/api/players' )
 			.then( res => {
-  assert.deepEqual( res.body, [ davis ] );
+  assert.deepEqual( res.body, [ healy ] );
   done();
 })
 			.catch( done );
@@ -83,7 +93,7 @@ describe( 'player api', () => {
   it( 'add a non-Athletics player', done => {
     request
 			.post( '/api/players' )
-			.send({ name: 'Kris Bryant', team: 'Cubs' })
+			.send(bryant)
 			.then( res => {
   assert.ok( res.body._id );
   done();
@@ -96,14 +106,27 @@ describe( 'player api', () => {
 			.get( '/api/players' )
 			.query({ team: 'Athletics' })
 			.then( res => {
-  assert.deepEqual( res.body, [ davis ] );
+  assert.deepEqual( res.body, [ healy ] );
+  done();
+})
+			.catch( done );
+  });
+
+  it( '/GETs sorted homer leader after 2nd player (Bryant) with more HRs added earlier', done => {
+    request
+			.get( '/api/players/hrLeaders' )
+			.then( res => {
+
+  assert.equal( res.body[0].name, 'Kris Bryant' );
   done();
 })
 			.catch( done );
   });
 	
-//  1) player api "after all" hook:
-//      Error: Resolution method is overspecified. Specify a callback *or* return a Promise; not both.
-
-  // after( done => connection.close( done ) );
 });
+
+
+
+
+
+

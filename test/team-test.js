@@ -37,6 +37,19 @@ describe('Team model', () => {
     });
   });
 
+	 it('wins must be less than 163', done => {
+   const team = new Team({
+     team: 'team',
+     wins: 1000
+   });
+			
+   team.validate(err => {
+     assert.isOk(err, 'expected error on wins data type');
+     done();
+   });
+ });
+	
+
   it('league defaults to "American"', done => {
     const team = new Team({
       team: 'Athletics'

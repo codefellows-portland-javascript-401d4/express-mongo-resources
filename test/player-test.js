@@ -37,6 +37,18 @@ describe('Player model', () => {
     });
   });
 
+  it('homers must be a positive number', done => {
+    const player = new Player({
+      name: 'player',
+      homers: -10
+    });
+			
+    player.validate(err => {
+      assert.isOk(err, 'expected error on homers data type');
+      done();
+    });
+  });
+
   it('team defaults to "Athletics"', done => {
     const player = new Player({
       name: 'Ryon Healy'
