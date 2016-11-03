@@ -1,5 +1,6 @@
 const server = require('./server');
 const port = process.env.PORT || 3333;
+require('./lib/mongoose');
 
 server.listen(port, err => {
   if (err) console.log('ERROR!', err);
