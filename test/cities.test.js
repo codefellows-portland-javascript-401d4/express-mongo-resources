@@ -112,15 +112,14 @@ describe('city', () => {
             .catch(done);
     });
 
+    const updateYar = {name: 'Yaroslavl', region: 'Central', population: 600000};
+
     it('changes population with PUT', done => {
-        const updateYar = JSON.stringify({name: 'Yaroslavl', region: 'Central', population: 600000});
         req
             .put(`/cities/${yar._id}`)
             .send(updateYar)
             .then(res => {
-                console.log(yar.population);
-                console.log(res.body.population);
-                assert.equal(res.body.population, yar.population);
+                assert.equal(res.body.population, updateYar.population);
                 done();
             })
             .catch(done);
@@ -130,7 +129,18 @@ describe('city', () => {
         req
             .del(`/cities/${yar._id}`)
             .then(res => {
-                console.log(yar.population);
+                yar.population = 600000;
+                assert.deepEqual(res.body, yar);
+                expect(res).status(200);
+                done();
+            })
+            .catch(done);
+    });
+
+    it('DELETE all', done => {
+        req
+            .del('/cities')
+            .then(res => {
                 expect(res).status(200);
                 done();
             })
