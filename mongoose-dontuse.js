@@ -13,7 +13,7 @@ mongoose.connect(dbURI);
 const schema = new mongoose.Schema({
     name: String,
     horn: String
-})
+});
 
 const Unicorn = mongoose.model('Unicorn', schema);
 

@@ -25,13 +25,11 @@ describe('Checks that app properly routes for gamechars', () =>{
             game: 'StageCraft',
             age: 19,
             attackpower: 14
-        })
+        });
 
         missPiggy.validate(err => {
             assert.isOk(err, 'Name is required');
             done();
-        })    
+        });
     });
-        
-
-})
+});

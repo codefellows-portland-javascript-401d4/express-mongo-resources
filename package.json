@@ -4,7 +4,11 @@
   "description": "mongo resource db with express server exercise",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "eslint ./",
+    "test": "mocha ./test/",
+    "test:watch": "mocha ./test/ -w",
+    "start": "mocha ./test/ && nodemon server.js", 
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
