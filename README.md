@@ -9,12 +9,8 @@ This is a RESTful API on nodeJS that delivers content from MongoDB. The API rout
 
 [Albert Reel](https://github.com/Waxhoya) and [Chris Bruner](https://github.com/QuantumArchive)
 
-####Version
-
-V1.0.0
-
--All restful methods for GET/PUT/POST/DELETE have been implemented for the collections gamechars and gamemaps
-
+####Version V1.0.0
+All restful methods for GET/PUT/POST/DELETE have been implemented for the collections gamechars and gamemaps
 
 ### Mongo Database and Mongoose
 
@@ -50,21 +46,16 @@ Both Endpoints offer full CRUD operation:
 
 #### GET
 
--To query a specific resource, you must pass it an id:
-
-*need to access something like http://localhost:3000/gamechars/:id
-
--To get all resources, simply call gamechars without a trailing /
-
-*http://localhost:3000/gamechars
-
+To query a specific resource, you must pass it an id:
+* need to access something like http://localhost:3000/gamechars/:id
+To get all resources, simply call gamechars without a trailing /
+* http://localhost:3000/gamechars
 
 #### PUT
 
--To update a specific character, you must have the character id and pass valid JSON:
+To update a specific character, you must have the character id and pass valid JSON:
 
-*Example using superagent:
-
+Example using superagent:
 ```javascript
 
 var request = require('superagent');
@@ -77,13 +68,12 @@ request
     });
 ```
 
-
 #### DELETE
 
 Delete functions require an /:id or will not function. No example is provided. 
 
 
-### Testing: End-to-End and Unit Testinghttps://github.com/QuantumArchive/express-mongo-resources
+### Testing: End-to-End and Unit Testing
 
 * Comprehensive Unit and End-to-End testing is included. 
 * The tests are scripted to npm test and can also be accessed with mocha.
