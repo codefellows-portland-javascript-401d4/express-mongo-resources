@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 const connection = require('../lib/setup-mongoose');
 const app = require('../lib/app');
 
-describe('region', () => {
+describe('region api', () => {
   before(done => {
     const CONNECTED = 1;
     if (connection.readyState === CONNECTED) dropCollection();
@@ -53,7 +53,7 @@ describe('region', () => {
   it('should get a file by query string', done => {
     request
       .get('/regions')
-      .query('NA')
+      .query({region:'NA'})
       .then(res => {
         assert.deepEqual(res.body, [NA]);
         done();
@@ -74,7 +74,7 @@ describe('region', () => {
   it('should update a file', done => {
     request
       .put(`/regions/${NA._id}`)
-      .send({teams: ['veggies', 'void boys', 'DC']})
+      .send({teams: ['veggies', 'void boys', 'Evil Geniuses']})
       .then(res => {
         assert.deepEqual(res.body, { ok: 1, nModified: 1, n: 1 });
         done();
@@ -82,6 +82,15 @@ describe('region', () => {
       .catch(done);
   });
 
+  it('should show the number of ti winning teams in the region', done => {
+    request
+      .get('/winners/NA')
+      .then(res => {
+        assert.equal(res.text, 'This region has 1 TI winning teams');
+        done();
+      })
+      .catch(done);
+  });
 
   it('should delete a file', done =>{
     request
@@ -92,4 +101,5 @@ describe('region', () => {
       })
       .catch(done);
   });
+
 });

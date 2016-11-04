@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 const connection = require('../lib/setup-mongoose');
 const app = require('../lib/app');
 
-describe('teams', () => {
+describe('teams api', () => {
   before(done => {
     const CONNECTED = 1;
     if (connection.readyState === CONNECTED) dropCollection();
