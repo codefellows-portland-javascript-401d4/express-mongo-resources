@@ -117,7 +117,7 @@ describe('hero end to end test', () => {
             .catch(done);
     });
 
-    it.skip('DELETEs by ID', done => {
+    it('DELETEs by ID', done => {
         request
             .delete(`/heroes/${superman._id}`)
             .then(res => {
@@ -127,7 +127,7 @@ describe('hero end to end test', () => {
             .catch(done);
     });
 
-    it.skip('DELETEs heroes collection', done => {
+    it('DELETEs heroes collection', done => {
         request
             .delete('/heroes')
             .then(res => {
