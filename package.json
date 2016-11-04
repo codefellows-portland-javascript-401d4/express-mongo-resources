@@ -1,0 +1,33 @@
+{
+  "name": "express-mongo-resources",
+  "version": "1.0.0",
+  "description": "Express mongo resources lab",
+  "main": "app.js",
+  "scripts": {
+    "test": "MONGODB_URI=mongodb://localhost/teams-test mocha",
+    "test:watch": "MONGODB_URI=mongodb://localhost/teams-test nodemon --exex mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codefellows-portland-javascript-401d4/express-mongo-resources.git"
+  },
+  "author": "Nathan Pickard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codefellows-portland-javascript-401d4/express-mongo-resources/issues"
+  },
+  "homepage": "https://github.com/codefellows-portland-javascript-401d4/express-mongo-resources#readme",
+  "dependencies": {
+    "body-parser":"1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "4.6.6",
+    "morgan": "1.7.0"
+  },
+  "devDependencies": {
+    "chai": "3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.1.2",
+    "morgan": "^1.7.0",
+    "nodemon": "^1.11.0"    
+  }
+}
