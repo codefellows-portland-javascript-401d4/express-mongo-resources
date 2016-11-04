@@ -39,7 +39,7 @@ describe('E2E testing the server', () => {
   it.only('fails when navigating to an unknown path', (done) => {
     chai.request(server)
       .get('/nowhere/fast')
-      .then((res) => {
+      .then(() => {
         done();
       })
       .catch((err) => {
