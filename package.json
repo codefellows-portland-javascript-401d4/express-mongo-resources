@@ -6,8 +6,8 @@
   "scripts": {
     "start": "npm run test && node server.js",
     "pretest": "npm run lint",
-    "test": "npm run mocha",
-    "test:watch": "npm run mocha -- -w",
+    "test": "mocha",
+    "test:watch": "mocha -- -w",
     "lint": "eslint ."
   },
   "repository": {

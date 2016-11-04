@@ -4,7 +4,7 @@ const assert = chai.assert;
 chai.use(chaiHttp);
 
 // start db ... store connection ... clear db
-const connection = require('../lib/setup-mongoose');
+const connection = require('../lib/mongoose-setup');
 
 const app = require('../lib/app');
 
@@ -12,8 +12,11 @@ describe('cat', () => {
 
   before(done => {
     const CONNECTED = 1;
-    if (connection.readyState === CONNECTED) dropCollection();
-    else connection.on('open', dropCollection);
+    if (connection.readyState === CONNECTED) {
+      dropCollection();
+    }
+    else
+      connection.on('open', dropCollection);
 
     function dropCollection() {
       const name = 'cats';
@@ -35,7 +38,7 @@ describe('cat', () => {
     gender: 'M'
   };
 
-  it('/GET all', done => {
+  it('/GET all', done => { // passes test
     request
       .get('/cats')
       .then(res => {
@@ -45,21 +48,21 @@ describe('cat', () => {
       .catch(done);
   });
 
-  it('/POST', done => {
+  it('/POST', done => { // passes test
     request
       .post('/cats')
       .send(BritCat)
       .then(res => {
         const cat = res.body;
         assert.ok(cat._id);
-        BritCat._v = 0;
+        BritCat.__v = 0;
         BritCat._id = cat._id;
         done();
       })
       .catch(done);
   });
 
-  it('/GET by id', done => {
+  it('/GET by id', done => { // FAILS test
     request
       .get(`/cats/${BritCat._id}`)
       .then(res => {
@@ -70,7 +73,7 @@ describe('cat', () => {
       .catch(done);
   });
 
-  it('/GET all after post', done => {
+  it('/GET all after post', done => { // FAILS test
     request
       .get('/cats')
       .then(res => {
@@ -80,7 +83,7 @@ describe('cat', () => {
       .catch(done);
   });
 
-  it('add a new breed of cat', done => {
+  it('add a new breed of cat', done => { // passes test
     request
       .post('/cats')
       .send({breed: 'Pharaoh', color: 'bare skin', gender: 'F'})
@@ -91,13 +94,18 @@ describe('cat', () => {
       .catch(done);
   });
 
-  // it('change gender of BritCat', done => {
-  //   request
-  //     .get(`/cats/${BritCat._id}`)
-  //
-  // })
+  it('change gender of BritCat', done => { // passes test
+    request
+      .get(`/cats/${BritCat._id}`)
+      .send({breed: 'Calico', color: 'multicolor', gender: 'F'})
+      .then(res => {
+        assert.ok(res.body._id);
+        done();
+      })
+      .catch(done);
+  });
 
-  it('/GET Calico cat', done => {
+  it('/GET Calico cat', done => { // FAILS test
     request
       .get('/cats')
       .query({breed: 'Calico'})
