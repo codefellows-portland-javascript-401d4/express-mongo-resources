@@ -1,7 +1,7 @@
 const Rider = require('../lib/models/rider');
 const expect = require('chai').expect;
 
-describe ('Rider model', () => {
+describe ('rider model', () => {
 
   it ('validates with name and team', (done) => {
     const test_rider = new Rider({

@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 const connection = require('../lib/setup-mongoose');
 const app = require('../lib/app');
 
-describe ('', () => {
+describe ('riders API E2E tesing', () => {
 
   const test_riders = [
     {
@@ -178,8 +178,7 @@ describe ('', () => {
   it ('deletes specific rider given id', (done) => {
     request
       .delete(`/api/riders/${test_riders[1]._id}`)
-      .then((res) => {
-        console.log('res.status after DELETE is ', res.statusCode);
+      .then(() => {
         request
           .get(`/api/riders/${test_riders[1]._id}`)
           .then((res) => { // eslint-disable-line no-unused-vars
@@ -204,19 +203,19 @@ describe ('', () => {
       .catch(done);
   });
 
-  it ('GET /api/riders/avgHeight?role=climber makes sure climbers are really short', (done) => {
-    request
-      .get('/api/riders/avgHeight')
-      .query({ role: 'climber' })
-      .then((res) => {
-        expect(res.body.avgHeight).to.be.below(175);
-        done();
-      })
-      .catch(done);
-  });
+  // it ('GET /api/riders/avgHeight?role=climber makes sure climbers are really short', (done) => {
+  //   request
+  //     .get('/api/riders/avgHeight')
+  //     .query({ role: 'climber' })
+  //     .then((res) => {
+  //       expect(res.body.avgHeight).to.be.below(175);
+  //       done();
+  //     })
+  //     .catch(done);
+  // });
 
-  after((done) => {
-    connection.close(done);
-  });
+  // after((done) => {
+  //   connection.close(done);
+  // });
 
 });
