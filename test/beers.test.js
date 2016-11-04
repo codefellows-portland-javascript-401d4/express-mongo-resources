@@ -5,7 +5,7 @@ const assert = chai.assert;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-require( '../lib/setup-mongoose' );
+const connection = require( '../lib/setup-mongoose' );
 const app = require('../lib/app');
 
 describe('the beer routes and models', () => {
@@ -14,11 +14,17 @@ describe('the beer routes and models', () => {
 
   before(done => {
 
-    server.delete('/api/beer/Deschutes')
-      .end((err, res) => {
-        if (err) return done(err);
-        done();
-      })
+    const CONNECTED = 1;
+    if (connection.readyState === CONNECTED) setup();
+    else connection.on('open', setup);
+
+    function setup() {
+      server.delete('/api/beer/Deschutes')
+        .end((err, res) => {
+          if (err) return done(err);
+          done();
+        });
+    }
   });
 
   it('requests beer api and gets results from the db', done => {
@@ -108,7 +114,6 @@ describe('the beer routes and models', () => {
       .end((err, res) => {
         if (err) return done(err);
         assert.equal(res.text, 'Deschutes removed.');
-        done();
       });
 
     server
