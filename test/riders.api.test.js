@@ -37,7 +37,33 @@ describe ('', () => {
       name: 'Mark Cavendish',
       team: 'HTC',
       role: 'sprinter',
-      nationality: 'Manx'
+      nationality: 'Manx',
+      height: 170,
+      weight: 64
+    },
+    {
+      name: 'Bradley Wiggins',
+      team: 'Sky',
+      height: 165,
+      weight: 55,
+      nationality: 'English',
+      role: 'climber'
+    },
+    {
+      name: 'David Etxabarria',
+      team: 'Euskaltel',
+      role: 'climber',
+      nationality: 'Basque',
+      height: 167,
+      weight: 57
+    },
+    {
+      name: 'Cadel Evans',
+      team: 'Sky',
+      height: 167,
+      weight: 59,
+      nationality: 'Australian',
+      role: 'climber'
     }
   ];
 
@@ -67,20 +93,35 @@ describe ('', () => {
       });
   });
 
-  it ('POST a rider stores the data and returns the stored object', (done) => {
+  // it ('POST a rider stores the data and returns the stored object', (done) => {
 
-    request
-      .post('/api/riders')
-      .send(test_riders[0])
-      .then((res) => {
-        const rider = res.body;
-        expect(rider._id).to.be.ok;
-        test_riders[0].__v = 0;
-        test_riders[0]._id = rider._id;
-        done();
-      })
-      .catch(done);
+  //   request
+  //     .post('/api/riders')
+  //     .send(test_riders[0])
+  //     .then((res) => {
+  //       const rider = res.body;
+  //       expect(rider._id).to.be.ok;
+  //       test_riders[0].__v = 0;
+  //       test_riders[0]._id = rider._id;
+  //       done();
+  //     })
+  //     .catch(done);
 
+  // });
+
+  it ('POSTs a bunch of riders', (done) => {
+    Promise.all(
+      test_riders.map((rider) => { return request.post('/api/riders').send(rider); })
+    )
+    .then((results) => {
+      // console.log('results ', results);
+      results.forEach((item, index) => {
+        test_riders[index]._id = item.body._id;
+        test_riders[index].__v = 0;
+      });
+      done();
+    })
+    .catch(done);
   });
 
   it ('GET /:id returns the correct rider', (done) => {
@@ -94,22 +135,6 @@ describe ('', () => {
       .catch(done);
   });
 
-  it ('POSTs more riders', (done) => {
-    Promise.all([
-      request.post('/api/riders').send(test_riders[1]),
-      request.post('/api/riders').send(test_riders[2]),
-      request.post('/api/riders').send(test_riders[3])
-    ])
-    .then((results) => {
-      console.log('results ', results);
-      results.forEach((item, index) => {
-        test_riders[index+1]._id = item.body._id;
-        test_riders[index+1].__v = 0;
-      });
-      done();
-    })
-    .catch(done);
-  });
 
   it ('GET / returns all riders after POST', (done) => {
 
