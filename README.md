@@ -1,16 +1,45 @@
-#Express Mongoose Resource with Promises
+# Express Mongoose Resource with Promises
 
 -I promise the mongoose will work expressly!
 
-###Author
+This is a RESTful API on nodeJS that delivers content from MongoDB. The API routes to 2 endpoints and a static page compiled and rendered with pug. _Please see the associated sections for suggested reconfiguration instructions_.
+
+
+### Authors
 
 Albert Reel and Chris Bruner
 
-###Version
+####Version
 
 V1.0.0
 
 -All restful methods for GET/PUT/POST/DELETE have been implemented for the collections gamechars and gamemaps
+
+
+### Mongo Database and Mongoose
+
+Persistant data storage is with Mongo database with Mongoose. 
+
+The defaults is designed to catch Heroku env variable MONGODB_URI but you may need to change the /lib/setup-mongoose.js file with your database info. Our database is currently configured to use a mLab.com database.
+
+_/lib/setup-mongoose.js line 4:_
+``` Javascript
+const dbURI = process.env.MONGODB_URI || 'mongodb://USER:USERPASS@ds141937.mlab.com:41937/gamechars' || 'mongodb://localhost/gamechars'; pizza
+```
+
+### Express Router
+
+Routing is handled with Express. Endpoints are abstracted into ./lib/routes/ individually. Accepted queries are covered in the API endpoint section.
+
+
+### API endpoints
+
+There are 2 API endoints:
+* _site:_/gamechars 
+* _site:_/gamemaps
+
+Both Endpoints offer full CRUD operations and can filter the response 
+
 
 ####GET
 
@@ -38,4 +67,20 @@ request
     .end((req, res) => {
         console.log(req)
     });
+```
 
+#### DELETE
+
+Delete functions require an /:id or will not function. No example is provided. 
+
+### Testing: End-to-End and Unit Testing
+
+* Comprehensive Unit and End-to-End testing is included. 
+* The tests are scripted to npm test and can also be accessed with mocha.
+* The tests are located in the /test folder.
+* The tests are chai and chai-http based
+
+
+### Issues
+
+Please feel free to post issues to github
