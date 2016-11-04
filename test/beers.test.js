@@ -12,17 +12,23 @@ describe('the beer routes and models', () => {
 
   const server = chai.request(app);
 
+  console.log('I made it to the describe block');
+
   before(done => {
+
+    console.log('I made it to the before block');
 
     const CONNECTED = 1;
     if (connection.readyState === CONNECTED) setup();
     else connection.on('open', setup);
 
     function setup() {
-      server.delete('/api/beer/Deschutes')
-        .end((err, res) => {
-          if (err) return done(err);
-          done();
+      const name = 'beers';
+      connection.db
+        .listCollections({name})
+        .next((err, collInfo) => {
+          if (!collInfo) return done();
+          connection.db.dropCollection(name, done);
         });
     }
   });
