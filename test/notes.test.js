@@ -11,7 +11,6 @@ const app = require('../lib/app');
 describe('the note model', () => {
   before((done) => {
     const CONNECTED = 1;
-    console.log('in note model', 'readyState',connection.readyState);
     if (connection.readyState === CONNECTED) dropCollection();
     else connection.on('open', dropCollection);
 
@@ -35,13 +34,12 @@ describe('the note model', () => {
       tag: ['notes', 'terminal', 'testing']
     };
   
-  it.only('navigates to POST and stashes a new note', (done) => {
+  it('navigates to POST and stashes a new note', (done) => {
     request
       .post('/notes/noteTested')
       .send(noteTested)
       .then((res) => {
         const note = res.body;
-        console.log('note', res.body);
         expect(note.data._id).to.be.ok;
         noteTested.__v = 0;
         noteTested._id = note.data._id;
@@ -50,7 +48,7 @@ describe('the note model', () => {
       .catch(done);
   });
 
-  it.only('navigates to the root and GETs all notes', (done) => {
+  it('navigates to the root and GETs all notes', (done) => {
     request
       .get('/')
       .then((res) => {
@@ -60,12 +58,12 @@ describe('the note model', () => {
       .catch(done);
   });
 
-  it('navigates to /:id and GETs by id', (done) => {
+  it('navigates to /:id and GETs a note by id', (done) => {
     request
-      .get(`/notes/${gitTested._id}`)
+      .get(`/notes/${noteTested._id}`)
       .then((res) => {
         const note = res.body;
-        expect(note).to.deep.equal([gitTested]);
+        expect(note.data.text).to.deep.equal('test and learn');
         done();
       })
       .catch(done);
@@ -73,10 +71,10 @@ describe('the note model', () => {
 
   it('stashes a note with no tags', (done) => {
     request
-      .post('/notes')
-      .send({title: 'emptyTest', text: 'not so empty', tags: '[]'})
+      .post('/notes/:id')
+      .send({title: 'empty note test', text: 'not so empty', tags: '[]'})
       .then((res) => {
-        expect.ok(res.body._id);
+        expect(res.body.data._id).to.be.ok;
         done();
       })
       .catch(done);
@@ -84,10 +82,11 @@ describe('the note model', () => {
 
   it('finds a note with a tag named testing', (done) => {
     request
-      .get('/notes')
+      .get('/notes/:id')
       .query({tag: 'testing'})
       .then((res) => {
-        expect(res.body).to.deep.equal([gitTested]);
+        console.log(res.body.data);
+        expect(res.body.data.tags).to.include('testing');
         done();
       })
       .catch(done);

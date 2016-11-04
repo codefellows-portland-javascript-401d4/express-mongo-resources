@@ -9,8 +9,8 @@ chai.use(chaiHttp);
 mongoose.Promise = Promise;
 
 //E2E testing the server
-describe('E2E testing the server', () => {
-  it.only('returns status code = 200 on successful requests', (done) => {
+describe.skip('E2E testing the server', () => {
+  it('returns status code = 200 on successful requests', (done) => {
     chai.request(server)
       .get('/notes')
       .then((res) => {
@@ -22,7 +22,7 @@ describe('E2E testing the server', () => {
       });
   });
 
-  it.only('sends response to POST request for specific file', (done) => {
+  it('sends response to POST request for specific file', (done) => {
     chai.request(server)
       .post('/test1')
       .send({title: 'test1', text: 'testtest'})
@@ -36,7 +36,7 @@ describe('E2E testing the server', () => {
   });
 
 
-  it.only('fails when navigating to an unknown path', (done) => {
+  it('fails when navigating to an unknown path', (done) => {
     chai.request(server)
       .get('/nowhere/fast')
       .then(() => {

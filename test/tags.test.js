@@ -38,13 +38,12 @@ describe('the tag model', () => {
       heat: 'warm'
     };
 
-  it.only('navigates to POST and stashes a new tag', (done) => {
+  it('navigates to POST and stashes a new tag', (done) => {
     request
       .post('/tags/tagTested')
       .send(tagTested)
       .then((res) => {
         const tag = res.body;
-        console.log('tag', res.body);
         expect(tag.data._id).to.be.ok;
         tagTested.__v = 0;
         tagTested._id = tag.data._id;
@@ -53,7 +52,7 @@ describe('the tag model', () => {
       .catch(done);
   });
 
-  it.only('navigates to the root and GETs all tags', (done) => {
+  it('navigates to the root and GETs all tags', (done) => {
     request
       .get('/')
       .then((res) => {
@@ -63,7 +62,38 @@ describe('the tag model', () => {
       .catch(done);
   });
 
-  
+  it('navigates to /:id and GETs a tag by id', (done) => {
+    request
+      .get(`/tags/${tagTested._id}`)
+      .then((res) => {
+        const tag = res.body;
+        expect(tag.data.description).to.deep.equal('test and learn');
+        done();
+      })
+      .catch(done);
+  });
+
+  it('stashes a tag with no heat', (done) => {
+    request
+      .post('/tags/:id')
+      .send({name: 'empty tag test', description: 'just for testing', heat: ''})
+      .then((res) => {
+        expect(res.body.data._id).to.be.ok;
+        done();
+      })
+      .catch(done);
+  });
+
+  it('finds a tag with a heat named warm', (done) => {
+    request
+    .get('/notes/:id')
+    .query({heat: 'warm'})
+    .then((res) => {
+      expect(res.body.data.heat).to.deep.equal('warm');
+      done();
+    })
+    .catch(done);
+  });
 
   // after((done) => {
   //   console.log('in the tags test');
