@@ -36,14 +36,11 @@ There are 2 API endoints AKA _resource_:
 * _site:_/gamemaps
 
 The endpoints offer access to the related database _resource_(s). Additional filters and selections include:
-* testingstatistics.js provides a 
-
 * _site_/_resource_/:id  Returns the object with a matching id
 * _site_/_resource_/statistics Returns a statistic object based on the _resouce_
 
-Both Endpoints offer full CRUD operation:
 
-
+CRUD operation:
 #### GET
 
 To query a specific resource, you must pass it an id:
