@@ -31,10 +31,10 @@ describe('Country model', () => {
     it('religions is an array', done => {
         const country = new Country({
             name: 'Stanistan',
-            religions: 5
+            religions: [5]
         });
 
-        country.path('religions').validate(err => {
+        country.validate(err => {
             assert.isOk(err, 'religions is not an array');
             done();
         });
