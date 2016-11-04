@@ -41,7 +41,7 @@ describe('tests the gamechar api', () => {
                 const powerstats = stats.body.power_stats;
                 assert.isAtLeast(agestats.mean, 64);
                 assert.isAtLeast(agestats.sd, 110);
-                assert.isAtLeast(powerstats.mean, 375)
+                assert.isAtLeast(powerstats.mean, 375);
                 assert.isAtLeast(powerstats.sd, 360);
                 done();
             })
@@ -132,6 +132,6 @@ describe('tests the gamechar api', () => {
             .catch( err => {
                 console.log(err);
                 done(err);
-            })
+            });
     });
 });

@@ -52,14 +52,14 @@ describe('tests the gamemap api', () => {
             .get('/gamemaps')
             .then(resource => {
                 assert.deepEqual(resource.body[0],
-                {
-                    "__v": 0,
-                    "_id": "581b691333fbcd3f2cbc05c7",
-                    "environment": "lake",
-                    "name": "Big Lakes",
-                    "size": 1000,
-                    "unitOfMeasure": "cubits"
-                });
+                    {
+                        '__v': 0,
+                        '_id': '581b691333fbcd3f2cbc05c7',
+                        'environment': 'lake',
+                        'name': 'Big Lakes',
+                        'size': 1000,
+                        'unitOfMeasure': 'cubits'
+                    });
                 done();
             })
             .catch( err => {
@@ -77,7 +77,7 @@ describe('tests the gamemap api', () => {
                 assert.ok(gamemap._id);
                 hyrule._id = gamemap._id;
                 hyrule.__v = 0;
-                hyrule.unitOfMeasure = 'cubits'
+                hyrule.unitOfMeasure = 'cubits';
                 done();
             })
             .catch(err => {

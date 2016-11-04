@@ -40,7 +40,7 @@ describe('Checks that app properly routes for gamemaps', () => {
         });
 
         darkSun.validate(err => {
-            assert.isOk(err, 'should produce ')
+            assert.isOk(err, 'should produce ');
             done();
         });
     });
