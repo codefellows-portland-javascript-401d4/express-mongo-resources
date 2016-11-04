@@ -168,9 +168,4 @@ describe('the routes and models of breweries', () => {
       });
   });
 
-  after( done => {
-    connection.close();
-    done();
-  });
-
 });

@@ -120,9 +120,4 @@ describe('the routes and models of coffeeshops', () => {
       });
   });
 
-  after( done => {
-    connection.close();
-    done();
-  });
-
 });

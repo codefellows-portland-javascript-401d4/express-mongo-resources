@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "pretest": "eslint *.js",
-    "test": "MONGODB_URI=mongodb://localhost/portland mocha",
+    "test": "MONGODB_URI=mongodb://localhost/portland mocha --timeout 5000",
     "start": "node server.js"
   },
   "repository": {
