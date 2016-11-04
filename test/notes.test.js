@@ -11,46 +11,46 @@ const app = require('../lib/app');
 describe('the note model', () => {
   before((done) => {
     const CONNECTED = 1;
+    console.log('in note model', 'readyState',connection.readyState);
     if (connection.readyState === CONNECTED) dropCollection();
     else connection.on('open', dropCollection);
 
     function dropCollection() {
       const name = 'notes';
       connection.db
-      .listCollections({name})
-      .next((err, callinfo) => {
-        if(!callinfo) return done();
-        connection.db.dropCollection(name, done);
-      });
+        .listCollections({name})
+        .next((err, callinfo) => {
+          if(!callinfo) return done();
+          connection.db.dropCollection(name, done);
+        });
     }
   });
 
   const request = chai.request(app);
 
-  const gitTested = 
+  const noteTested = 
     {
-      title: 'git for testing',
+      title: 'note for testing',
       text: 'test and learn',
-      tag: ['git', 'terminal', 'testing']
+      tag: ['notes', 'terminal', 'testing']
     };
   
   it.only('navigates to POST and stashes a new note', (done) => {
     request
-      .post('/notes/gitTested')
-      .send(gitTested)
+      .post('/notes/noteTested')
+      .send(noteTested)
       .then((res) => {
-        console.log(res.body);
         const note = res.body;
-//double check the following line
+        console.log('note', res.body);
         expect(note.data._id).to.be.ok;
-        gitTested.__v = 0;
-        gitTested._id = note.data._id;
+        noteTested.__v = 0;
+        noteTested._id = note.data._id;
         done();
       })
       .catch(done);
   });
 
-  it.only('navigates to the root and GETs all files', (done) => {
+  it.only('navigates to the root and GETs all notes', (done) => {
     request
       .get('/')
       .then((res) => {
@@ -93,6 +93,9 @@ describe('the note model', () => {
       .catch(done);
   });
 
-  //after((done) => connection.close(done));
+  // after((done) => {
+  //   console.log('in the notes test');
+  //   connection.close(done);
+  // });
 
 });
