@@ -7,7 +7,7 @@ This is a RESTful API on nodeJS that delivers content from MongoDB. The API rout
 
 ### Authors
 
-Albert Reel and Chris Bruner
+[Albert Reel](https://github.com/Waxhoya) and [Chris Bruner](https://github.com/QuantumArchive)
 
 ####Version
 
@@ -40,11 +40,12 @@ There are 2 API endoints AKA _resource_:
 * _site:_/gamemaps
 
 The endpoints offer access to the related database _resource_(s). Additional filters and selections include:
+* testingstatistics.js provides a 
 
 * _site_/_resource_/:id  Returns the object with a matching id
 * _site_/_resource_/statistics Returns a statistic object based on the _resouce_
 
-Both Endpoints offer full CRUD operations and can filter the response 
+Both Endpoints offer full CRUD operation:
 
 
 #### GET
@@ -82,14 +83,15 @@ request
 Delete functions require an /:id or will not function. No example is provided. 
 
 
-### Testing: End-to-End and Unit Testing
+### Testing: End-to-End and Unit Testinghttps://github.com/QuantumArchive/express-mongo-resources
 
 * Comprehensive Unit and End-to-End testing is included. 
 * The tests are scripted to npm test and can also be accessed with mocha.
 * The tests are located in the /test folder.
-* The tests are chai and chai-http based
+* The tests are chai and chai-http based.
 
 
 ### Issues
 
 Please feel free to post issues to github
+* https://github.com/QuantumArchive/express-mongo-resources
