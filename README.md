@@ -27,6 +27,7 @@ _/lib/setup-mongoose.js line 4:_
 const dbURI = process.env.MONGODB_URI || 'mongodb://USER:USERPASS@ds141937.mlab.com:41937/gamechars' || 'mongodb://localhost/gamechars'; pizza
 ```
 
+
 ### Express Router
 
 Routing is handled with Express. Endpoints are abstracted into ./lib/routes/ individually. Accepted queries are covered in the API endpoint section.
@@ -38,17 +39,15 @@ There are 2 API endoints AKA _resource_:
 * _site:_/gamechars 
 * _site:_/gamemaps
 
-
 The endpoints offer access to the related database _resource_(s). Additional filters and selections include:
 
 * _site_/_resource_/:id  Returns the object with a matching id
 * _site_/_resource_/statistics Returns a statistic object based on the _resouce_
 
-
 Both Endpoints offer full CRUD operations and can filter the response 
 
 
-####GET
+#### GET
 
 -To query a specific resource, you must pass it an id:
 
@@ -58,7 +57,8 @@ Both Endpoints offer full CRUD operations and can filter the response
 
 *http://localhost:3000/gamechars
 
-####PUT
+
+#### PUT
 
 -To update a specific character, you must have the character id and pass valid JSON:
 
@@ -76,9 +76,11 @@ request
     });
 ```
 
+
 #### DELETE
 
 Delete functions require an /:id or will not function. No example is provided. 
+
 
 ### Testing: End-to-End and Unit Testing
 
