@@ -37,7 +37,33 @@ describe ('riders API E2E tesing', () => {
       name: 'Mark Cavendish',
       team: 'HTC',
       role: 'sprinter',
-      nationality: 'Manx'
+      nationality: 'Manx',
+      height: 170,
+      weight: 64
+    },
+    {
+      name: 'Bradley Wiggins',
+      team: 'Sky',
+      height: 165,
+      weight: 55,
+      nationality: 'English',
+      role: 'climber'
+    },
+    {
+      name: 'David Etxabarria',
+      team: 'Euskaltel',
+      role: 'climber',
+      nationality: 'Basque',
+      height: 167,
+      weight: 57
+    },
+    {
+      name: 'Cadel Evans',
+      team: 'Sky',
+      height: 167,
+      weight: 59,
+      nationality: 'Australian',
+      role: 'climber'
     }
   ];
 
@@ -67,20 +93,35 @@ describe ('riders API E2E tesing', () => {
       });
   });
 
-  it ('POST a rider stores the data and returns the stored object', (done) => {
+  // it ('POST a rider stores the data and returns the stored object', (done) => {
 
-    request
-      .post('/api/riders')
-      .send(test_riders[0])
-      .then((res) => {
-        const rider = res.body;
-        expect(rider._id).to.be.ok;
-        test_riders[0].__v = 0;
-        test_riders[0]._id = rider._id;
-        done();
-      })
-      .catch(done);
+  //   request
+  //     .post('/api/riders')
+  //     .send(test_riders[0])
+  //     .then((res) => {
+  //       const rider = res.body;
+  //       expect(rider._id).to.be.ok;
+  //       test_riders[0].__v = 0;
+  //       test_riders[0]._id = rider._id;
+  //       done();
+  //     })
+  //     .catch(done);
 
+  // });
+
+  it ('POSTs a bunch of riders', (done) => {
+    Promise.all(
+      test_riders.map((rider) => { return request.post('/api/riders').send(rider); })
+    )
+    .then((results) => {
+      // console.log('results ', results);
+      results.forEach((item, index) => {
+        test_riders[index]._id = item.body._id;
+        test_riders[index].__v = 0;
+      });
+      done();
+    })
+    .catch(done);
   });
 
   it ('GET /:id returns the correct rider', (done) => {
@@ -94,31 +135,16 @@ describe ('riders API E2E tesing', () => {
       .catch(done);
   });
 
+
   it ('GET / returns all riders after POST', (done) => {
 
     request
       .get('/api/riders/')
       .then((res) => {
-        expect(res.body).to.deep.equal( [ test_riders[0] ] );
+        expect(res.body).to.deep.equal(test_riders);
         done();
       })
       .catch(done);
-  });
-
-  it ('adds riders with a different roles', (done) => {
-
-    request
-      .post('/api/riders')
-      .send(test_riders[1])
-      .then((res) => {
-        const new_rider = res.body;
-        expect(new_rider._id).to.be.ok;
-        test_riders[1].__v = 0;
-        test_riders[1]._id = new_rider._id;
-        done();
-      })
-      .catch(done);
-
   });
 
   it ('returns only riders who are GC', (done) => {
