@@ -4,7 +4,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha"
+    "lint": "eslint **/*.js",
+    "pretest": "npm run lint",
+    "test": "mocha",
+    "watch": "npm run test -- -w",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
