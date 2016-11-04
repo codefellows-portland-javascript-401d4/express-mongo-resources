@@ -56,6 +56,15 @@ describe('Cats e2e', () => {
     });
     //test passes because we are asserting that an id exists for the object that was posted
 
+    it('GET by ID', done => {
+        request.get(`/api/cats/${tom._id}`)
+      .then(res => {
+          assert.deepEqual(res.body, tom);
+          done();
+      })
+      .catch(done);
+    });
+
     it('PUT', done => {
         request.put(`/api/cats/${tom._id}`)
         .send(tom)
@@ -67,6 +76,14 @@ describe('Cats e2e', () => {
     });
     //test passes because the data sent to the existing cat, "Tom", returned the same, original id
 
-    // it();
+    it('DELETE', done => {
+        request.delete(`/api/cats/${tom._id}`)
+      .then(res => {
+          assert.deepEqual(res.body, tom);
+          done();
+      })
+      .catch(done);
+    });
+    //test passes because the object in memory that was deleted matches our dummy object in test
 
 });
