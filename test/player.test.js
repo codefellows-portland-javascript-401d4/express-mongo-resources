@@ -24,16 +24,16 @@ describe('Player model', () => {
         });
     });
 
-    // it('position must be a string', done => {
-    //     const player = new Player({
-    //         position: 'jghjg'
-    //     });
-    //
-    //     player.validate(err => {
-    //         assert.isOk(err, 'expected error - incorrect data type on position');
-    //         done();
-    //     });
-    // });
+    it('position must be a string', done => {
+        const player = new Player();
+        player.position = null;
+
+
+        player.validate(err => {
+            assert.isOk(err, 'expected error - incorrect data type on position');
+            done();
+        });
+    });
 
 
 
