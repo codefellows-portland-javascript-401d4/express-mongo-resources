@@ -27,28 +27,4 @@ describe('Country model', () => {
             done();
         });
     });
-
-    it('religions is an array', done => {
-        const country = new Country({
-            name: 'Stanistan',
-            religions: [5]
-        });
-
-        country.validate(err => {
-            assert.isOk(err, 'religions is not an array');
-            done();
-        });
-    });
-
-    it('requires freedom to be a Boolean', done => {
-        const country = new Country({
-            name: 'Hebetude',
-            freedom: 'no'
-        });
-
-        country.validate(err => {
-            assert.isOk(err, 'freedom is neither a choice or a Boolean');
-            done();
-        });
-    });
 });
