@@ -34,9 +34,16 @@ Routing is handled with Express. Endpoints are abstracted into ./lib/routes/ ind
 
 ### API endpoints
 
-There are 2 API endoints:
+There are 2 API endoints AKA _resource_:
 * _site:_/gamechars 
 * _site:_/gamemaps
+
+
+The endpoints offer access to the related database _resource_(s). Additional filters and selections include:
+
+* _site_/_resource_/:id  Returns the object with a matching id
+* _site_/_resource_/statistics Returns a statistic object based on the _resouce_
+
 
 Both Endpoints offer full CRUD operations and can filter the response 
 
