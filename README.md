@@ -16,11 +16,12 @@ In addition to having a MongoDB server running (type 'mongod' in a dedicated ter
     "mongoose": "^4.6.5",
     "morgan": "^1.7.0"
   },
-  "devDependencies": {
+   "devDependencies": {
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
+    "eslint": "^3.9.1",
     "mocha": "^3.1.2"
-	}
+  }
 
 "npm run test" to launch the test package which tests the two models and the api.
 

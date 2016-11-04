@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Code Fellows 401 Assignment 2016-11-02",
   "main": "server.js",
- "scripts": {
+  "scripts": {
     "pretest": "npm run lint",
     "test": "npm run test:run",
     "test:run": "mocha",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
+    "eslint": "^3.9.1",
     "mocha": "^3.1.2"
   }
 }
