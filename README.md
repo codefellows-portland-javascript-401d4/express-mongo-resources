@@ -4,39 +4,33 @@
  - Tim Combs
 
 ### Project Functionality
-  - This is a Code Fellows Lab Assignment to create an http express server that uses mongoDB for persistent storage and retrieval - it is a faux database for notes
+  - This is a Code Fellows Lab Assignment to create an http express server that uses mongoDB for persistent storage and retrieval and mongoose as the templating and validation layer - it creates a database for notes and tags
   - The http server runs on localhost:3333
 
-  - server.js acts as a server
-  - app.js acts as request handler & router
-  - dataStore.js accesses the the file system
-  - readBody.js asynchronously builds the requestbody from the chunked database
-  - resHandler.js writes the response and errors back to the user 
+  - server.js is the server
+  - app.js is the request handler
+  - notes.js & tags.js are the routes
+  - errHandler.js handles sending error messages to the client
+  -
 
-  - User will be able to read the directory of the notes, read specific notes, create new notes, update existing notes and delete notes dependent on specific path and request method
-  - The dataStore.js module implements the file system methods
-    - dataStore.retrieveDir implements GET requests for the /notes directory
-    - dataStore.retrieveFile implements GET requests for specific notes in the directory
-    - dataStore.stash implements POST requests for new specific notes for the directory
-    - dataStore.update implements PUT requests to overwrite existing specific notes in the directory
-    - dataStore.remove implments DELETE requests for existing specific notes in the directory
+  - Upon navigating to specific paths, client will be able to get all documents, get specific documents, create new documents, update existing documents and delete specific documents for each collection - notes and tags
+  - The database methods are implemented in the routes files for each collection: notes.js & tags.js
+    - GET all requests for the /notes or /tags
+    - GET requests for the /notes/:id or /tags/:id
+    - POST requests for the /notes/:id or /tags/:id
+    - PUT requests to overwrite for the /notes/:id or /tags/:id
+    - DELETE requests for the /notes/:id or /tags/:id
   
   - Different responses and errors will be written to the browser and/or logged to the console dependent on specific path &/or request method
-  - Notes are stored as JSON files
+  - Notes & tags are stored and returned to client as JSON files
 
 ### How To Use Codebase
   - This module uses Node, npm and the following modules:
     - net, http, fs, path modules from node
     - express (for node middleware), morgan (for logging), body-parser (for body parsing), mongoose (for database communication)
-    - eslint, mocha, chai, chai-http for testing
+    - eslint, mocha, chai, chai-http, nodemon for testing
   - Make sure to run npm install from the directory root to install dependencies
   - Please refer to the package.json for more info
-  
-  - A notes directory currently exists in the root of the project directory
-  - The notes directory includes test1.json & test2.json files
-    - These files do not affect the functionality of the app
-    - They must be in the notes directory when starting the tests.
-    - See the testing section for more details
 
   - To use this module as it stands, from the command line at the root of the project directory type:
     ```
@@ -48,25 +42,24 @@
 
   - specific notes are JSON
 
-  - testing can be done using a browser for GET requests or an app like Postman [https://www.getpostman.com/] for the other request methods
+  - simple testing can be done using a browser for GET requests or an app like Postman [https://www.getpostman.com/] for the other request methods
+  - 
 
 
 ### Use Cases
 
-  - navigating to localhost:8080/ serves index.html to the browser, which displays 'Serving pages for you using node!'
+  - navigating to localhost:3333/ serves index.html to the browser, which displays 'Serving pages for you using node!'
 
-  - navigating to localhost:8080/notes displays the directory list for the /notes directory
-  - navigating to localhost:8080/notes/<specific_note>.json displays the file
+  - navigating to localhost:3333/notes or localhost:3333/tags serves all the documents for the respective collection
+  - navigating to localhost:3333/<notes_or_tags>/<specific_note_or_specific_tag> serves the specific document
 
-  - sending a POST request to localhost:8080/notes/<specific_note>.json with the note in JSON in the body writes the note into the file directory and displays 'Your file has been written'
+  - sending a POST request to localhost:3333/<notes_or_tags>/<specific_note_or_specific_tag> writes the note or tag into the database, displays a success message and serves the document to the client
 
-  - sending a PUT request to localhost:8080/notes/<specific_note>.json with the note in JSON in the body overwrites the note in the file directory if it exists, creates it if it doesn't exist and displays 'Your file has been updated'
+  - sending a PUT request to localhost:3333/<notes_or_tags>/<specific_note_or_specific_tag> overwrites the note or tag into the database, displays a success message and serves the document to the client
 
-  - NOTE: PUT & POST both overwrite files if they already exist
+  - sending a DELETE request to localhost:3333/<notes_or_tags>/<specific_note_or_specific_tag> deletes the note from the database and displays 'Your file has been deleted'
 
-  - sending a DELETE request to localhost:8080/notes/<specific_note>.json deletes the note from the file directory and displays 'Your file has been deleted'
-
-  - navigating to other localhost:8080/<something_else> console.logs a 404 status code and displays 'there is no path at /<something_else> please check your map'
+  - navigating to other localhost:3333/<something_else> logs 404 status code and serves a failure message to the client
   
 
 ### Testing
@@ -75,26 +68,9 @@
       ```
       $ mocha
       ```
-    - you will see 2 unit tests & 7 E2E tests
+    - you will see unit tests for the tags and notes route files and e2e tests
 
-    - As stated above, both test1.json & test2.json must be in /notes folder to run tests
-    - Feel free to delete for normal usage
-    - If you need to remake the test files:
-      - test1.json
-        ```
-        {
-          "title": "test1.json",
-          "text": "Dinner is consistent, the chicken comes out golden every time"
-        }
-        ```
-
-      - test2.json
-        ```
-        {
-          "title": "test2.json",
-          "text": ""
-        }
-        ```
+    - mocha will then use a test database notes-test-dbto run through a series of get, push, post & delete requests.
 
 ### Code Shape
   - This code has been vetted using Eslint and was reviewed by Code Fellows using Travis-CI
