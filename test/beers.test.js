@@ -8,21 +8,17 @@ chai.use(chaiHttp);
 const connection = require( '../lib/setup-mongoose' );
 const app = require('../lib/app');
 
-describe('the beer routes and models', () => {
+describe('the routes and models of breweries', () => {
 
   const server = chai.request(app);
 
-  console.log('I made it to the describe block');
-
   before(done => {
 
-    console.log('I made it to the before block');
-
     const CONNECTED = 1;
-    if (connection.readyState === CONNECTED) setup();
-    else connection.on('open', setup);
+    if (connection.readyState === CONNECTED) setupBeer();
+    else connection.on('open', setupBeer);
 
-    function setup() {
+    function setupBeer() {
       const name = 'beers';
       connection.db
         .listCollections({name})
@@ -31,16 +27,45 @@ describe('the beer routes and models', () => {
           connection.db.dropCollection(name, done);
         });
     }
+
   });
-
-
 
   it('posts new breweries to the list', done => {
 
-    const Belmont =  {"name":"Belmont Station","streetAddress":"4500 SE Stark St","zipcode":97215,"phone":5032328538,"brewery":false,"bestBeer":null,"visited":true};
-    const Lompoc = {"name":"Lompoc 5th Quadrant","streetAddress":"3901 N Williams Ave","zipcode":97227,"phone":5032883996,"brewery":true,"bestBeer":"Proletariat Red","visited":true};
-    const Laurelwood = {"name":"Laurelwood Public House & Brewery","streetAddress":"5115 NE Sandy Blvd","zipcode":97213,"phone":5032820622,"brewery":true,"bestBeer":"Workhorse IPA","visited":true};
-    const Deschutes = {"name":"Deschutes","phone":5038675309,"brewery":true,"visited":true};
+    const Belmont = {
+      "name": "Belmont Station",
+      "streetAddress": "4500 SE Stark St",
+      "zipcode": 97215,
+      "phone": 5032328538,
+      "brewery": false,
+      "bestBeer": null,
+      "visited": true
+    };
+    const Lompoc = {
+      "name": "Lompoc 5th Quadrant",
+      "streetAddress": "3901 N Williams Ave",
+      "zipcode": 97227,
+      "phone": 5032883996,
+      "brewery": true,
+      "bestBeer": "Proletariat Red",
+      "visited": true
+    };
+    const Laurelwood = {
+      "name": "Laurelwood Public House & Brewery",
+      "streetAddress": "5115 NE Sandy Blvd",
+      "zipcode": 97213,
+      "phone": 5032820622,
+      "brewery": true,
+      "bestBeer": "Workhorse IPA",
+      "visited": true
+    };
+
+    const Deschutes = {
+      "name": "Deschutes",
+      "phone": 5038675309,
+      "brewery": true,
+      "visited": true
+    };
 
     server
       .post('/api/beer')
@@ -74,20 +99,18 @@ describe('the beer routes and models', () => {
         assert.equal(res.text, 'Deschutes added!');
         done();
       });
-
   });
 
-  // local db testing only
   it('queries by a brewery name and gets results', done => {
 
     const expectedResults = {
-      "name":"Belmont Station",
-      "streetAddress":"4500 SE Stark St",
-      "zipcode":97215,
-      "phone":5032328538,
-      "brewery":false,
-      "bestBeer":null,
-      "visited":true
+      "name": "Belmont Station",
+      "streetAddress": "4500 SE Stark St",
+      "zipcode": 97215,
+      "phone": 5032328538,
+      "brewery": false,
+      "bestBeer": null,
+      "visited": true
     };
 
     server
@@ -104,13 +127,11 @@ describe('the beer routes and models', () => {
         assert.equal(results.visited, expectedResults.visited);
         done();
       });
-
   });
 
   it('updates a valid field in an existing record', done => {
 
-    const update = { "bestBeer": "Mirror Pond"};
-    const expectedResults = '[{"_id":"581a8d26ca8a26db175663f7","name":"Belmont Station","streetAddress":"4500 SE Stark St","zipcode":97215,"phone":5032328538,"brewery":false,"bestBeer":null,"visited":true},{"_id":"581a8d34ca8a26db175663f8","name":"Lompoc 5th Quadrant","streetAddress":"3901 N Williams Ave","zipcode":97227,"phone":5032883996,"brewery":true,"bestBeer":"Proletariat Red","visited":true},{"_id":"581a8d3dca8a26db175663f9","name":"Laurelwood Public House & Brewery","streetAddress":"5115 NE Sandy Blvd","zipcode":97213,"phone":5032820622,"brewery":true,"bestBeer":"Workhorse IPA","visited":true}, {"name":"Deschutes","phone":5038675309,"brewery":true,"visited":true,"bestBeer":"Mirror Pond"}]';
+    const update = {"bestBeer":"Mirror Pond"};
 
     server
       .put('/api/beer/Deschutes')
@@ -118,17 +139,16 @@ describe('the beer routes and models', () => {
       .end((err, res) => {
         if (err) return done(err);
         assert.equal(res.text, 'Deschutes updated.');
-        done();
       });
 
     server
-      .get('/api/beer')
+      .get('/api/beer/Deschutes')
       .end((err, res) => {
         if (err) return done(err);
-        assert.equal(res.text, expectedResults);
+        let results = JSON.parse(res.text);
+        assert.equal(results.bestBeer, update.bestBeer);
         done();
       });
-
   });
 
   it('deletes a record by name', done => {
@@ -146,7 +166,11 @@ describe('the beer routes and models', () => {
         if (err) done();
         else done(err);
       });
+  });
 
+  after( done => {
+    connection.close();
+    done();
   });
 
 });
