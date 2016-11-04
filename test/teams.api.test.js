@@ -47,7 +47,7 @@ describe( 'team', () => {
 				.send( snap )
 				.then( res => {
     const team = res.body;
-		console.log(team);
+    // console.log(team);
     assert.ok( team._id );
     snap.__v = 0;
     snap._id = team._id;
@@ -72,8 +72,8 @@ describe( 'team', () => {
 //         request
 // 			.get( '/api/teams' )
 // 			.then( res => {
-// 		// console.log(res.body);
-// 		// console.log( [snap] );
+//     console.log(res.body);
+//     console.log( [snap] );
 //     assert.equal( res.body, [ snap ] );
 //
 //     done();
@@ -81,5 +81,7 @@ describe( 'team', () => {
 // 			.catch( done );
 //     });
 
-    after( done => connection.close( done ) );
+    after( done => {
+        connection.close( done );
+    });
 });
