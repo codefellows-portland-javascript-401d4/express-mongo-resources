@@ -1,6 +1,5 @@
 const server = require('../server');
 
-const EventEmitter = require('events');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
