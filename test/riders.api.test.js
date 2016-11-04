@@ -94,32 +94,32 @@ describe ('', () => {
       .catch(done);
   });
 
+  it ('POSTs more riders', (done) => {
+    Promise.all([
+      request.post('/api/riders').send(test_riders[1]),
+      request.post('/api/riders').send(test_riders[2]),
+      request.post('/api/riders').send(test_riders[3])
+    ])
+    .then((results) => {
+      console.log('results ', results);
+      results.forEach((item, index) => {
+        test_riders[index+1]._id = item.body._id;
+        test_riders[index+1].__v = 0;
+      });
+      done();
+    })
+    .catch(done);
+  });
+
   it ('GET / returns all riders after POST', (done) => {
 
     request
       .get('/api/riders/')
       .then((res) => {
-        expect(res.body).to.deep.equal( [ test_riders[0] ] );
+        expect(res.body).to.deep.equal(test_riders);
         done();
       })
       .catch(done);
-  });
-
-  it ('adds riders with a different roles', (done) => {
-
-    request
-      .post('/api/riders')
-      .send(test_riders[1])
-      .then((res) => {
-        const new_rider = res.body;
-        expect(new_rider._id).to.be.ok;
-        test_riders[1].__v = 0;
-        test_riders[1]._id = new_rider._id;
-        console.log('Jan\'s ID: ', test_riders[1]._id);
-        done();
-      })
-      .catch(done);
-
   });
 
   it ('returns only riders who are GC', (done) => {
