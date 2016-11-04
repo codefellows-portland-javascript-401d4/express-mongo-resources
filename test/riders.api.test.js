@@ -168,6 +168,28 @@ describe ('', () => {
       .catch(done);
   });
 
+  it ('GET /api/riders/avgHeight returns average height of riders', (done) => {
+    request
+      .get('/api/riders/avgHeight')
+      .then((res) => {
+        expect(res.body.avgHeight).to.be.a('number');
+        expect(res.body.avgHeight).to.be.within(50,200);
+        done();
+      })
+      .catch(done);
+  });
+
+  it ('GET /api/riders/avgHeight?role=climber makes sure climbers are really short', (done) => {
+    request
+      .get('/api/riders/avgHeight')
+      .query({ role: 'climber' })
+      .then((res) => {
+        expect(res.body.avgHeight).to.be.below(175);
+        done();
+      })
+      .catch(done);
+  });
+
   after((done) => {
     connection.close(done);
   });
