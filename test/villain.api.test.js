@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 const connection = require('../lib/setup-mongoose');
 const app = require('../lib/app');
 
-describe('hero end to end test', () => {
+describe('villain end to end test', () => {
 
     before(done => {
         const CONNECTED = 1;
@@ -15,7 +15,7 @@ describe('hero end to end test', () => {
         else connection.on('open', dropCollection);
 
         function dropCollection() {
-            const name = 'heroes';
+            const name = 'villains';
             connection.db
                 .listCollections({name})
                 .next((err, collinfo) => {
@@ -27,25 +27,23 @@ describe('hero end to end test', () => {
 
     const request = chai.request(app);
 
-    const spiderman = {
-        name: 'Spiderman',
-        ability: 'Super Strength',
+    const thanos = {
+        name: 'Thanos',
+        ability: 'Telekinesis',
         universe: 'Marvel',
-        created: '1962',
-        anti_hero: false
+        created: '1973'
     };
 
-    const superman = {
-        name: 'Superman',
-        ability: 'Flight',
+    const joker = {
+        name: 'The Joker',
+        ability: 'Mastermind',
         universe: 'DC',
-        created: '1938',
-        anti_hero: false
+        created: '1940'
     };
 
     it('GETs all', done => {
         request
-            .get('/heroes/')
+            .get('/villains/')
             .then(res => {
                 assert.deepEqual(res.body, []);
                 done();
@@ -55,22 +53,22 @@ describe('hero end to end test', () => {
 
     it('POSTs', done => {
         request
-            .post('/heroes')
-            .send(spiderman)
+            .post('/villains')
+            .send(thanos)
             .then(res => {
-                const hero = res.body;
-                spiderman.__v = 0;
-                spiderman._id = hero._id;
+                const villain = res.body;
+                thanos.__v = 0;
+                thanos._id = villain._id;
             })
             .catch(done);
 
         request
-            .post('/heroes')
-            .send(superman)
+            .post('/villains')
+            .send(joker)
             .then(res => {
-                const hero = res.body;
-                superman.__v = 0;
-                superman._id = hero._id;
+                const villain = res.body;
+                joker.__v = 0;
+                joker._id = villain._id;
                 done();
             })
             .catch(done);
@@ -78,10 +76,10 @@ describe('hero end to end test', () => {
 
     it('GETs by ID', done => {
         request
-            .get(`/heroes/${spiderman._id}`)
+            .get(`/villains/${thanos._id}`)
             .then(res => {
-                const hero = res.body;
-                assert.deepEqual(hero, spiderman);
+                const villain = res.body;
+                assert.deepEqual(villain, thanos);
                 done();
             })
             .catch(done);
@@ -89,47 +87,46 @@ describe('hero end to end test', () => {
 
     it('GETs where universe is Marvel', done => {
         request
-            .get('/heroes')
+            .get('/villains')
             .query({ universe : 'Marvel' })
             .then(res => {
-                assert.deepEqual(res.body, [spiderman]);
+                assert.deepEqual(res.body, [thanos]);
                 done();
             })
             .catch(done);
     });
 
     it('Changes a field with PUT', done => {
-        const spiderman2 = {
-            name: 'Spiderman',
-            ability: 'Spider Senses',
+        const thanos2 = {
+            name: 'Thanos',
+            ability: 'Telekinesis',
             universe: 'Marvel',
-            created: '1962',
-            anti_hero: false
+            created: '1973'
         };
         request
-            .put(`/heroes/${spiderman._id}`)
-            .send(spiderman2)
+            .put(`/villains/${thanos._id}`)
+            .send(thanos2)
             .then(res => {
-                const hero = res.body;
-                spiderman2.ability = hero.ability;
+                const villain = res.body;
+                thanos2.ability = villain.ability;
                 done();
             })
             .catch(done);
     });
 
-    it.skip('DELETEs by ID', done => {
+    it('DELETEs by ID', done => {
         request
-            .delete(`/heroes/${superman._id}`)
+            .delete(`/villains/${joker._id}`)
             .then(res => {
-                assert.deepEqual(res.body, superman);
+                assert.deepEqual(res.body, joker);
                 done();
             })
             .catch(done);
     });
 
-    it.skip('DELETEs heroes collection', done => {
+    it('DELETEs villains collection', done => {
         request
-            .delete('/heroes')
+            .delete('/villains')
             .then(res => {
                 assert.deepEqual(res.body, true);
                 done();

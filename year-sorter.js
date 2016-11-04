@@ -1,7 +1,7 @@
 'use strict';
 
-const arr = ['500', '1986', '1944', '1964', '826'];
-const orderedArr = [];
+
+// this code will take data from the database and return an array of the 'created' years in descending order
 
 var numArr = arr.map(function(string) {
     return Number(string);
