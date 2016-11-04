@@ -1,0 +1,27 @@
+{
+  "name": "express-mongo-resources",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/risafletcher/express-mongo-resources.git"
+  },
+  "author": "Risa Fletcher",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/risafletcher/express-mongo-resources/issues"
+  },
+  "homepage": "https://github.com/risafletcher/express-mongo-resources#readme",
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.9.1",
+    "express": "^4.14.0",
+    "mocha": "^3.1.2"
+  }
+}
