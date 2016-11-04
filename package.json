@@ -7,12 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "pretest": "npm run lint",
-    "test": "npm run test:run",
-    "test:run": "mocha",
-    "test:watch": "npm run test:run -- -w",
-    "lint": "eslint .",
-    "start": "npm run test && node server.js"
+    "start": "DEBUG=myapp.* nodemon server.js",
+    "test": "MONGODB_URI=mongodb://localhost/fantasy-test mocha",
+    "test:watch": "MONGODB_URI=mongodb://localhost/fantasy-test nodemon --exec mocha"
   },
   "repository": {
     "type": "git",
@@ -26,6 +23,7 @@
   "homepage": "https://github.com/DrewStock/express-mongo-resources#readme",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "debug": "^2.2.0",
     "express": "^4.14.0",
     "mongoose": "^4.6.5",
     "sander": "^0.5.1"
