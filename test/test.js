@@ -1,37 +1,53 @@
-const server = require('../lib/server');
+const server = require('../server');
 
 const EventEmitter = require('events');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const mongoose = require('mongoose');
 const expect = chai.expect;
 chai.use(chaiHttp);
 
+mongoose.Promise = Promise;
+
 //E2E testing the server
-describe('E2E testing the server', () => {
+describe('E2E testing the server', (done) => {
   it('returns status code = 200 on successful requests', () => {
     chai.request(server)
       .get('/notes')
       .then((res) => {
         expect(res).to.have.status(200);
+        done();
       })
       .catch((err) => {
-        return err;
+        done(err);
       });
   });
 
-  it('sends response to request for specific path', () => {
+  it('sends response to POST request for specific file', (done) => {
     chai.request(server)
-      .get('/notes')
+      .post('/test1')
+      .send({title: 'test1', text: 'testtest'})
       .then((res) => {
-        expect(res.text).to.be.equal(/*what goes here?*/);
+        console.log(res);
+        expect(res);
+        done();
+      })
+      .catch((err) => {
+        done(err);
       });
   });
 
-  it('sends response to request for specific file', () => {
+
+  it('fails when navigating to an unknown path', (done) => {
     chai.request(server)
-      .get('test1')
-      .then((res) => {
-        expect(res.text).to.equal(/*what goes here?*/);
+      .get('/nowhere/fast')
+      .then(() => {
+        done();
+      })
+      .catch((err) => {
+        expect(err).to.have.status(400);
+        expect(err.message).to.be.equal('no path by that name, please check your map.');
+        done(err);
       });
   });
 
