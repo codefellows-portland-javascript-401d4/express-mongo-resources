@@ -50,9 +50,9 @@ describe('the note model', () => {
 
   it('navigates to the root and GETs all notes', (done) => {
     request
-      .get('/')
+      .get('/notes')
       .then((res) => {
-        expect(res.body).to.deep.equal({});
+        expect(res.body).is.ok;
         done();
       })
       .catch(done);
@@ -110,6 +110,16 @@ describe('the note model', () => {
           .then((res) => {
             expect(res.body.data).to.deep.equal(undefined);
           });
+        done();
+      })
+      .catch(done);
+  });
+
+  it('returns the last 5 updated notes', (done) => {
+    request
+      .get('/notes/last5/notes')
+      .then((data) => {
+        expect(data.length <= 5);
         done();
       })
       .catch(done);

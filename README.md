@@ -17,6 +17,8 @@
   - The database methods are implemented in the routes files for each collection: notes.js & tags.js
     - GET all requests for the /notes or /tags
     - GET requests for the /notes/:id or /tags/:id
+    - GET requests for the last 5 updated records for /notes
+    - GET requests for records with specific property=value pairs for /notes and /tags
     - POST requests for the /notes/:id or /tags/:id
     - PUT requests to overwrite for the /notes/:id or /tags/:id
     - DELETE requests for the /notes/:id or /tags/:id
@@ -51,11 +53,15 @@
   - navigating to localhost:3333/ serves index.html to the browser, which displays 'Serving pages for you using node!'
 
   - navigating to localhost:3333/notes or localhost:3333/tags serves all the documents for the respective collection
-  - navigating to localhost:3333/<notes_or_tags>/<specific_note_or_specific_tag> serves the specific document
+  - navigating to localhost:3333/<notes_or_tags>/<specific_note_id_or_specific_tag_id> serves the specific document
+
+  - navigating to localhost:3333/<notes_or_tags>/search/<specific_property>/<specific_value> serves all the documents that contain the specific property=value pair for the respective collection
+
+  - navigating to localhost:3333/notes/last5/notes serves the last 5 updated notes
 
   - sending a POST request to localhost:3333/<notes_or_tags>/<specific_note_or_specific_tag> writes the note or tag into the database, displays a success message and serves the document to the client
 
-  - sending a PUT request to localhost:3333/<notes_or_tags>/<specific_note_or_specific_tag> overwrites the note or tag into the database, displays a success message and serves the document to the client
+  - sending a PUT request to localhost:3333/<notes_or_tags>/<specific_note_or_specific_tag> updates/overwrites the note or tag into the database, displays a success message and serves the document to the client
 
   - sending a DELETE request to localhost:3333/<notes_or_tags>/<specific_note_or_specific_tag> deletes the note from the database and displays 'Your file has been deleted'
 
