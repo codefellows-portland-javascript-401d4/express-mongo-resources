@@ -29,7 +29,7 @@
 ### How To Use Codebase
   - This module uses Node, npm and the following modules:
     - net, http, fs, path modules from node
-    - express (for node middleware), morgan (for logging), body-parser (for body parsing), mongoose (for database communication)
+    - express (for node middleware), morgan (for logging), body-parser (for body parsing), mongoDB (the database), mongoose (for schematic validation, queries and boilerplate)
     - eslint, mocha, chai, chai-http, nodemon for testing
   - Make sure to run npm install from the directory root to install dependencies
   - Please refer to the package.json for more info
@@ -38,14 +38,12 @@
     ```
     $ npm start
     ``` 
-  - Then open a browser window and navigate to the address localhost:8080/
+  - Then open a browser window and navigate to the address localhost:3333/
 
-  - app is a back end app, so to implement functionality project should be "wired" to a front end using the methods in the dataStore object encapsulated in dataStore.js
+  - This is a back end app, so to implement functionality project should be "wired" to a front end using the route methods from notes.js & tags.js
 
-  - specific notes are JSON
+  - Data flows to and from the mongoDB database as JSON
 
-  - simple testing can be done using a browser for GET requests or an app like Postman [https://www.getpostman.com/] for the other request methods
-  - 
 
 
 ### Use Cases
@@ -77,6 +75,8 @@
     - you will see unit tests for the tags and notes route files and e2e tests
 
     - mocha will then use a test database notes-test-dbto run through a series of get, push, post & delete requests.
+
+  - simple testing can be done using a browser for GET requests or an app like Postman [https://www.getpostman.com/] for the other request methods
 
 ### Code Shape
   - This code has been vetted using Eslint and was reviewed by Code Fellows using Travis-CI
