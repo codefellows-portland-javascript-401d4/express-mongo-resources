@@ -17,55 +17,53 @@ describe('the note model', () => {
     function dropCollection() {
       const name = 'notes';
       connection.db
-      .listCollections({name})
-      .next((err, callinfo) => {
-        if(!callinfo) return done();
-        connection.db.dropCollection(name, done);
-      });
+        .listCollections({name})
+        .next((err, callinfo) => {
+          if(!callinfo) return done();
+          connection.db.dropCollection(name, done);
+        });
     }
   });
 
   const request = chai.request(app);
 
-  const gitTested = 
+  const noteTested = 
     {
-      title: 'git for testing',
+      title: 'note for testing',
       text: 'test and learn',
-      tag: ['git', 'terminal', 'testing']
+      tags: ['notes', 'terminal', 'testing']
     };
   
-  it.only('navigates to POST and stashes a new note', (done) => {
+  it('navigates to POST and stashes a new note', (done) => {
     request
-      .post('/notes/gitTested')
-      .send(gitTested)
+      .post('/notes')
+      .send(noteTested)
       .then((res) => {
-        console.log(res.body);
         const note = res.body;
-//double check the following line
         expect(note.data._id).to.be.ok;
-        gitTested.__v = 0;
-        gitTested._id = note.data._id;
+        noteTested.__v = 0;
+        noteTested._id = note.data._id;
         done();
       })
       .catch(done);
   });
 
-  it.only('navigates to the root and GETs all files', (done) => {
+  it('navigates to the root and GETs all notes', (done) => {
     request
-      .get('/')
+      .get('/notes')
       .then((res) => {
-        expect(res.body).to.deep.equal({});
+        expect(res.body).is.ok;
         done();
       })
       .catch(done);
   });
 
-  it('navigates to /:id and GETs by id', (done) => {
+  it('navigates to /:id and GETs a note by id', (done) => {
     request
-      .get(`/notes/${gitTested._id}`)
+      .get(`/notes/${noteTested._id}`)
       .then((res) => {
         const note = res.body;
-        expect(note).to.deep.equal([gitTested]);
+        expect(note.data.text).to.deep.equal('test and learn');
         done();
       })
       .catch(done);
@@ -74,25 +72,57 @@ describe('the note model', () => {
   it('stashes a note with no tags', (done) => {
     request
       .post('/notes')
-      .send({title: 'emptyTest', text: 'not so empty', tags: '[]'})
+      .send({title: 'empty note test', text: 'not so empty'})
       .then((res) => {
-        expect.ok(res.body._id);
+        expect(res.body.data._id).to.be.ok;
         done();
       })
       .catch(done);
   });
 
-  it('finds a note with a tag named testing', (done) => {
+  it('finds notes with a tag named testing', (done) => {
     request
-      .get('/notes')
-      .query({tag: 'testing'})
+      .get('/notes/search/tags/testing')
       .then((res) => {
-        expect(res.body).to.deep.equal([gitTested]);
+        expect(res.body.data[0].tags).to.include('testing');
         done();
       })
       .catch(done);
   });
 
-  //after((done) => connection.close(done));
+  it('updates a note in the database', (done) => {
+    request
+      .put(`/notes/${noteTested._id}`)
+      .send({title: 'modified note for testing', text: 'modified text', tags: ['notes', 'terminal', 'testing']})
+      .then((res) => {
+        expect(res.body.data.text).to.deep.equal('modified text');
+        done();
+      })
+      .catch(done);
+  });
+
+  it('deletes a note from the database', (done) => {
+    request
+      .delete(`/notes/${noteTested._id}`)
+      .then(() => {
+        request
+          .get(`/notes/${noteTested._id}`)
+          .then((res) => {
+            expect(res.body.data).to.deep.equal(undefined);
+          });
+        done();
+      })
+      .catch(done);
+  });
+
+  it('returns the last 5 updated notes', (done) => {
+    request
+      .get('/notes/last5/notes')
+      .then((data) => {
+        expect(data.length <= 5);
+        done();
+      })
+      .catch(done);
+  });
 
 });
