@@ -7,7 +7,7 @@ const teams = require('./routes/teams');
 
 app.use(morgan('dev'));
 
-app.use('/api/teams', teamss);
+app.use('/api/teams', teams);
 
 app.use(errorHandler);
 
