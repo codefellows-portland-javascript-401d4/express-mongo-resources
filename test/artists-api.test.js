@@ -10,10 +10,6 @@ const app = require('../lib/app');
 
 describe('artists api', () => {
     before(done => {
-        const connected = 1;
-        if(connection.readyState === connected) dropConnection();
-        else connection.on('open', dropCollection);
-
         function dropCollection() {
             const name = 'artists';
             connection.db
@@ -23,9 +19,13 @@ describe('artists api', () => {
                     connection.db.dropCollection(name, done);
                 });
         }
+        const connected = 1;
+        if(connection.readyState === connected) dropCollection();
+        else connection.on('open', dropCollection);
     });
 
     const request = chai.request(app);
+
     const testPainter = {
         name: 'salvador dalí',
         style: 'surrealism'
