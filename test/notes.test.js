@@ -90,9 +90,29 @@ describe('the note model', () => {
       .catch(done);
   });
 
-  // after((done) => {
-  //   console.log('in the notes test');
-  //   connection.close(done);
-  // });
+  it('updates a note in the database', (done) => {
+    request
+      .put(`/notes/${noteTested._id}`)
+      .send({title: 'modified note for testing', text: 'modified text', tags: ['notes', 'terminal', 'testing']})
+      .then((res) => {
+        expect(res.body.data.text).to.deep.equal('modified text');
+        done();
+      })
+      .catch(done);
+  });
+
+  it('deletes a note from the database', (done) => {
+    request
+      .delete(`/notes/${noteTested._id}`)
+      .then(() => {
+        request
+          .get(`/notes/${noteTested._id}`)
+          .then((res) => {
+            expect(res.body.data).to.deep.equal(undefined);
+          });
+        done();
+      })
+      .catch(done);
+  });
 
 });

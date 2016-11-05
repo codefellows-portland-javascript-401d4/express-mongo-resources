@@ -11,17 +11,14 @@ const app = require('../lib/app');
 describe('the tag model', () => {
   before((done) => {
     const CONNECTED = 1;
-    // console.log(connection.readyState);
     if (connection.readyState === CONNECTED) dropCollection();
     else connection.on('open', dropCollection);
 
     function dropCollection() {
       const name = 'tags';
-      // console.log('in tag drop Collection', connection);
       connection.db
         .listCollections({name})
         .next((err, callinfo) => {
-          // console.log('tag test err', err);
           if (err) done(err);
           if (!callinfo) return done();
           connection.db.dropCollection(name, done);
@@ -94,11 +91,29 @@ describe('the tag model', () => {
     .catch(done);
   });
 
-  // after((done) => {
-  //   console.log('in the tags test');
-  //   connection.close(done);
-  // });
+  it('updates a tag in the database', (done) => {
+    request
+      .put(`/tags/${tagTested._id}`)
+      .send({name: 'modified tag for testing', description: 'modified tag text', heat: 'warm'})
+      .then((res) => {
+        expect(res.body.data.description).to.deep.equal('modified tag text');
+        done();
+      })
+      .catch(done);
+  });
 
-
+  it('deletes a tag from the database', (done) => {
+    request
+      .delete(`/tags/${tagTested._id}`)
+      .then(() => {
+        request
+          .get(`/tags/${tagTested._id}`)
+          .then((res) => {
+            expect(res.body.data).to.deep.equal(undefined);
+          });
+        done();
+      })
+      .catch(done);
+  });
 
 });

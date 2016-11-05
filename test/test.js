@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 mongoose.Promise = Promise;
 
 //E2E testing the server
-describe.skip('E2E testing the server', () => {
+describe('E2E testing the server', () => {
   it('returns status code = 200 on successful requests', (done) => {
     chai.request(server)
       .get('/notes')
@@ -35,7 +35,6 @@ describe.skip('E2E testing the server', () => {
       });
   });
 
-
   it('fails when navigating to an unknown path', (done) => {
     chai.request(server)
       .get('/nowhere/fast')
@@ -48,10 +47,5 @@ describe.skip('E2E testing the server', () => {
         done(err);
       });
   });
-
-
-
-
-
 
 });
