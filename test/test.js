@@ -8,7 +8,6 @@ chai.use(chaiHttp);
 
 mongoose.Promise = Promise;
 
-//E2E testing the server
 describe('E2E testing the server', () => {
   it('returns status code = 200 on successful requests', (done) => {
     chai.request(server)

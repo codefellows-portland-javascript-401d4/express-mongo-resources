@@ -81,7 +81,7 @@ describe('the tag model', () => {
       .catch(done);
   });
 
-  it('finds tags with a heat named warm', (done) => {
+  it('finds tags with a heat valued warm', (done) => {
     request
     .get('/tags/search/heat/warm')
     .then((res) => {
