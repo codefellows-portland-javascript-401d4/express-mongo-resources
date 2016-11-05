@@ -31,12 +31,12 @@ describe('the note model', () => {
     {
       title: 'note for testing',
       text: 'test and learn',
-      tag: ['notes', 'terminal', 'testing']
+      tags: ['notes', 'terminal', 'testing']
     };
   
   it('navigates to POST and stashes a new note', (done) => {
     request
-      .post('/notes/noteTested')
+      .post('/notes')
       .send(noteTested)
       .then((res) => {
         const note = res.body;
@@ -71,8 +71,8 @@ describe('the note model', () => {
 
   it('stashes a note with no tags', (done) => {
     request
-      .post('/notes/:id')
-      .send({title: 'empty note test', text: 'not so empty', tags: '[]'})
+      .post('/notes')
+      .send({title: 'empty note test', text: 'not so empty'})
       .then((res) => {
         expect(res.body.data._id).to.be.ok;
         done();
@@ -80,13 +80,11 @@ describe('the note model', () => {
       .catch(done);
   });
 
-  it('finds a note with a tag named testing', (done) => {
+  it('finds notes with a tag named testing', (done) => {
     request
-      .get('/notes/:id')
-      .query({tag: 'testing'})
+      .get('/notes/search/tags/testing')
       .then((res) => {
-        console.log(res.body.data);
-        expect(res.body.data.tags).to.include('testing');
+        expect(res.body.data[0].tags).to.include('testing');
         done();
       })
       .catch(done);
