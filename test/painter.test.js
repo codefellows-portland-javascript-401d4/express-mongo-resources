@@ -6,8 +6,8 @@ const assert = require('chai').assert;
 describe ('Painter model', () => {
     it('validates Painter name and style', done => {
         const painter = new Painter({
-            name: 'name',
-            style: 'style'
+            name: 'salvador dalí',
+            style: 'surrealism'
         });
 
         painter.validate(error => {
