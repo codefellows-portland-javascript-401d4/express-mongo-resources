@@ -15,7 +15,7 @@ describe('artists api', () => {
         else connection.on('open', dropCollection);
 
         function dropCollection() {
-            const name = 'artists';
+            const name = 'painters';
             connection.db
                 .listCollections({ name })
                 .next((error, collectinfo) => {
@@ -26,12 +26,13 @@ describe('artists api', () => {
     });
 
     const request = chai.request(app);
+    
     const testPainter = {
         name: 'salvador dalí',
         style: 'surrealism'
     };
 
-    it('/GET all', done => {
+    it('/GETs all artists', done => {
         request 
             .get('/artists')
             .then(response => {
@@ -41,7 +42,7 @@ describe('artists api', () => {
             .catch(done);
     });
 
-    it('/POST', done => {
+    it('/POSTs a new artist', done => {
         request
             .post('/artists')
             .send(testPainter)
@@ -55,13 +56,33 @@ describe('artists api', () => {
             .catch(done);
     });
 
-    it('/GET by id', done => {
+    it('/GETs all artists after new post', done => {
+        request
+            .get('/artists')
+            .then(response => {
+                assert.deepEqual(response.body, [testPainter]);
+                done();
+            })
+            .catch(done);
+    });
+
+    it('/GETs an artist by id', done => {
         request
             .get(`/artists/${testPainter._id}`)
             .then(response => {
                 const painter = response.body;
                 assert.deepEqual(painter, testPainter);
                 done()
+            })
+            .catch(done);
+    });
+
+    it('removes an artist for /DELETE request', done => {
+        request 
+            .delete(`/artists/${testPainter._id}`)
+            .then(response => {
+                assert.isOk(response.body, 'deleted');
+                done();
             })
             .catch(done);
     });
