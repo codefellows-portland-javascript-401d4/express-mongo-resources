@@ -3,29 +3,10 @@ const chaiHttp = require('chai-http');
 const assert = chai.assert;
 const expect = chai.expect;
 chai.use(chaiHttp);
-const dbConnection = require('../lib/mongoose');
+require('../lib/mongoose');
 const app = require('../lib/app');
 
 describe('city', () => {
-    before(done => {
-        const CONNECTED = 1;
-        if(dbConnection.readyState === CONNECTED) {
-            dropCollection();
-        } else {
-            dbConnection.on('open', dropCollection);
-        }
-
-        function dropCollection() {
-            const name = 'cities';
-            dbConnection.db
-                .listCollections({name})
-                .next((err, collinfo) => {
-                    if(!collinfo) return done();
-                    dbConnection.db.dropCollection(name, done);
-                });
-        }
-    });
-
     const req = chai.request(app);
 
     const yek = {
@@ -50,10 +31,9 @@ describe('city', () => {
             .send(yek)
             .then(res => {
                 const city = res.body;
-                assert.ok(city._id);
-                assert.equal(city.name, yek.name);
                 yek.__v = 0;
                 yek._id = city._id;
+                assert.deepEqual(city, yek);
                 done();
             })
             .catch(done);
@@ -82,10 +62,9 @@ describe('city', () => {
             .send(yar)
             .then(res => {
                 const city = res.body;
-                assert.ok(city._id);
-                assert.equal(city.name, yar.name);
                 yar.__v = 0;
                 yar._id = city._id;
+                assert.deepEqual(city, yar);
                 done();
             })
             .catch(done);
@@ -110,6 +89,16 @@ describe('city', () => {
                 done();
             })
             .catch(done);
+    });
+
+    it('GET cities with population below 1 million', done => {
+        req
+            .get('/cities/small')
+            .then(res => {
+                assert.equal(res.body, 1);
+                done();
+            })
+            .catch();
     });
 
     const updateYar = {name: 'Yaroslavl', region: 'Central', population: 600000};

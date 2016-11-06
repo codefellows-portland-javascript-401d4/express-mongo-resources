@@ -3,29 +3,10 @@ const chaiHttp = require('chai-http');
 const assert = chai.assert;
 const expect = chai.expect;
 chai.use(chaiHttp);
-const dbConnection = require('../lib/mongoose');
+require('../lib/mongoose');
 const app = require('../lib/app');
 
 describe('country', () => {
-    before(done => {
-        const CONNECTED = 1;
-        if(dbConnection.readyState === CONNECTED) {
-            dropCollection();
-        } else {
-            dbConnection.on('open', dropCollection);
-        }
-
-        function dropCollection() {
-            const name = 'countries';
-            dbConnection.db
-                .listCollections({name})
-                .next((err, collinfo) => {
-                    if(!collinfo) return done();
-                    dbConnection.db.dropCollection(name, done);
-                });
-        }
-    });
-
     const req = chai.request(app);
 
     const azer = {
@@ -50,10 +31,9 @@ describe('country', () => {
             .send(azer)
             .then(res => {
                 const country = res.body;
-                assert.ok(country._id);
-                assert.equal(country.name, azer.name);
                 azer.__v = 0;
                 azer._id = country._id;
+                assert.deepEqual(country, azer);
                 done();
             })
             .catch(done);
@@ -82,10 +62,9 @@ describe('country', () => {
             .send(arm)
             .then(res => {
                 const country = res.body;
-                assert.ok(country._id);
-                assert.equal(country.name, arm.name);
                 arm.__v = 0;
                 arm._id = country._id;
+                assert.deepEqual(country, arm);
                 done();
             })
             .catch(done);
