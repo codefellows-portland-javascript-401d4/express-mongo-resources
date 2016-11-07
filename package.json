@@ -2,10 +2,10 @@
   "name": "express-mongo-resources",
   "version": "1.0.0",
   "description": "Express mongo resources lab",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "MONGODB_URI=mongodb://localhost/teams-test mocha",
-    "test:watch": "MONGODB_URI=mongodb://localhost/teams-test nodemon --exex mocha"
+    "test": "MONGODB_URI=mongodb://localhost/football-test mocha",
+    "test:watch": "MONGODB_URI=mongodb://localhost/football-test nodemon --exex mocha"
   },
   "repository": {
     "type": "git",
