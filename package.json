@@ -1,0 +1,34 @@
+{
+  "name": "housing",
+  "version": "1.0.0",
+  "description": "App for finding housing",
+  "main": "server.js",
+  "scripts": {
+    "test": "MONGODB_URI=mongodb://localhost/housing-test mocha",
+    "test:watch": "MONGODB_URI=mongodb://localhost/housing-test nodemon --exec mocha",
+    "lint": "eslint .",
+    "pretest": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JPGothro/express-mongo-resources.git"
+  },
+  "author": "JP Gothro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JPGothro/express-mongo-resources/issues"
+  },
+  "homepage": "https://github.com/JPGothro/express-mongo-resources#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "mongoose": "^4.6.5",
+    "morgan": "^1.7.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.9.1",
+    "mocha": "^3.1.2",
+    "nodemon": "^1.11.0"
+  }
+}
