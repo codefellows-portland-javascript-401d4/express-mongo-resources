@@ -4,8 +4,9 @@
   "description": "Express mongo resources lab",
   "main": "server.js",
   "scripts": {
+    "start": "DEBUG=myapp.* nodemon server.js",
     "test": "MONGODB_URI=mongodb://localhost/football-test mocha",
-    "test:watch": "MONGODB_URI=mongodb://localhost/football-test nodemon --exex mocha"
+    "test:watch": "MONGODB_URI=mongodb://localhost/football-test nodemon --exec mocha"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,7 @@
     "express": "^4.14.0",
     "mongoose": "4.6.6",
     "morgan": "1.7.0",
-    "debug": "2.2.0",
+    "debug": "2.3.0",
     "sander": "0.5.1"
   },
   "devDependencies": {

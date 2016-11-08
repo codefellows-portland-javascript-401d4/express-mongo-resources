@@ -4,7 +4,7 @@ const assert = require('chai').assert;
 describe('Team model', () => {
     it('validate team name', done => {
         const team = new Team ({
-            teamName: 'teamName'
+            name: 'name'
         });
 
         team.validate(err => {

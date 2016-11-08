@@ -3,9 +3,9 @@ const chaiHttp = require('chai-http');
 const assert = chai.assert;
 chai.use(chaiHttp);
 
-const connection = require( '../lib/setup_mongoose');
+const connection = require( '../lib/setup-mongoose');
 
-const app = require( '../lib/app' );
+const app = require( '../app' );
 
 describe( 'coach', () => {
     before( done => {
@@ -47,7 +47,7 @@ describe( 'coach', () => {
                 const coach = res.body;
                 assert.ok( coach._id);
                 pete.__v = 0;
-                pete._id = team._id;
+                pete._id = coach._id;
                 done();
             })
             .catch( done );
@@ -55,7 +55,7 @@ describe( 'coach', () => {
 
     it( 'GET by id', done => {
         request
-            .get(`/api/coaches/${pete._id}`)
+            .get(`/api/coaches/${pete._id}` )
             .then( res => {
                 const coach = res.body;
                 assert.deepEqual( coach, pete );

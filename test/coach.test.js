@@ -24,11 +24,11 @@ describe('Coach model', () => {
     });
 
     it('position must be a string', done => {
-        const coach = new Coach( {
-            coachName: 'coach',
-            position: 'head'
-        });        
-
+        const coach = new Coach(); 
+        coach.position = null;
+            // coachName: 'coach',
+            // position: 'head'
+        
         coach.validate(err => {
             assert.isOk(err, 'expected error: data type should be string');
             done();
