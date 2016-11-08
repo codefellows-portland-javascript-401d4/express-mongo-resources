@@ -1,5 +1,5 @@
 const http = require('http');
-const app = require('./lib/app');
+const app = require('./app');
 const port = process.env.PORT || 8080;
 require('./lib/setup-mongoose.js');
 
