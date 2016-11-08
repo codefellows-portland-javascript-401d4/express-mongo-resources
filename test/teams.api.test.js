@@ -25,7 +25,7 @@ describe( 'team', () => {
     });
 
     const request = chai.request(app);
-    
+
     const seahawks = {
         name: 'Seahawks'
     };
@@ -56,7 +56,7 @@ describe( 'team', () => {
 
     it( 'GET by id', done => {
         request
-            .get(`/api/teams/${seahawks._id}` )
+            .get(`/api/teams/${seahawks._id}`)
             .then( res => {
                 const team = res.body;
                 assert.deepEqual( team, seahawks );
