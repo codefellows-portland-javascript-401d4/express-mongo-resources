@@ -31,14 +31,13 @@ describe('cat', () => {
 
   const request = chai.request(app);
 
-  // test case cat object
-  const BritCat = {
+  const BritCat = { // test case cat object
     breed: 'Calico',
     color: 'multicolor',
     gender: 'M'
   };
 
-  it('/GET all', done => { // passes test
+  it('/GET all', done => { // passes test for GET all when array is empty
     request
       .get('/cats')
       .then(res => {
@@ -48,7 +47,7 @@ describe('cat', () => {
       .catch(done);
   });
 
-  it('/POST', done => { // passes test
+  it('/POST', done => { // passes test for POST to 'cats' collection
     request
       .post('/cats')
       .send(BritCat)
@@ -62,7 +61,7 @@ describe('cat', () => {
       .catch(done);
   });
 
-  it('/GET by id', done => { // FAILS test
+  it('/GET by id', done => { // passes test for GET by id
     request
       .get(`/cats/${BritCat._id}`)
       .then(res => {
@@ -73,7 +72,7 @@ describe('cat', () => {
       .catch(done);
   });
 
-  it('/GET all after post', done => { // FAILS test
+  it('/GET all after post', done => { // passes test for GET all after POST
     request
       .get('/cats')
       .then(res => {
@@ -83,7 +82,7 @@ describe('cat', () => {
       .catch(done);
   });
 
-  it('add a new breed of cat', done => { // passes test
+  it('add a new breed of cat', done => { // passes test for POST new breed of chaiHttp
     request
       .post('/cats')
       .send({breed: 'Pharaoh', color: 'bare skin', gender: 'F'})
@@ -94,9 +93,9 @@ describe('cat', () => {
       .catch(done);
   });
 
-  it('change gender of BritCat', done => { // passes test
+  it('change gender of BritCat', done => { // passes test for PUT ... change gender of cat
     request
-      .get(`/cats/${BritCat._id}`)
+      .put(`/cats/${BritCat._id}`)
       .send({breed: 'Calico', color: 'multicolor', gender: 'F'})
       .then(res => {
         assert.ok(res.body._id);
@@ -105,12 +104,23 @@ describe('cat', () => {
       .catch(done);
   });
 
-  it('/GET Calico cat', done => { // FAILS test
+  it('/GET Calico cat', done => { // passes test to GET the Calico cat
     request
       .get('/cats')
       .query({breed: 'Calico'})
       .then(res => {
         assert.deepEqual(res.body, [BritCat]);
+        done();
+      })
+      .catch(done);
+  });
+
+  it('/DELETE BritCat', done => { // passes test to DELETE the BritCat
+    request
+      .del(`/cats/${BritCat._id}`)
+      .then(res => {
+        BritCat.__v = 0;
+        assert.deepEqual(res.body, BritCat);
         done();
       })
       .catch(done);
