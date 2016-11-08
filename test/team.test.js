@@ -15,7 +15,7 @@ describe('Team model', () => {
 
     if('teamName is required', done => {
         const team = new Team ();
-        team.city = '';
+        team.wins = 5;
 
         team.validate(err => {
             assert.isOk(err, 'teamName should be required');
@@ -23,12 +23,12 @@ describe('Team model', () => {
         });        
     });
 
-    it('city must be a string', done => {
+    it('wins have to be a number', done => {
         const team = new Team();
-        team.city = null;
+        team.wins = null;
 
         team.validate(err => {
-            assert.isOk(err, 'expected error: data type should be string');
+            assert.isOk(err, 'expected error: data type should be number');
             done();
         });
     });

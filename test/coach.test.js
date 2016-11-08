@@ -1,4 +1,4 @@
-const Team = require('../lib/models/coach');
+const Coach = require('../lib/models/coach');
 const assert = require('chai').assert;
 
 describe('Coach model', () => {
