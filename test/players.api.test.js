@@ -7,7 +7,7 @@ const connection = require( '../lib/setup_mongoose');
 
 const app = require( '../lib/app' );
 
-describe( 'player', () => {
+describe( 'players e2e', () => {
 
     before( done => {
         const CONNECTED = 1;
@@ -28,7 +28,8 @@ describe( 'player', () => {
     const request = chai.request(app);
 
     const antonio = {
-        playerName: 'Antonio Brown'
+        playerName: 'Antonio Brown',
+        position: 'WR'
     };
 
     it( '/GET all', done => {
@@ -51,6 +52,7 @@ describe( 'player', () => {
     assert.ok( player._id );
     antonio.__v = 0;
     antonio._id = player._id;
+    console.log(antonio);
     done();
 })
 			.catch( done );
@@ -68,8 +70,37 @@ describe( 'player', () => {
 			.catch( done );
     });
 
+    const updated = {
+        playerName: 'Antonio Brown',
+        position: 'QB'
+    };
 
-    // after( done => {
-    //     connection.close( done );
-    // });
+
+    it('/PUT - updates a player', done => {
+        request
+            .put(`/api/players/${antonio._id}`)
+            .send(updated)
+            .then(res => {
+                const updated = res.body;
+                console.log(updated);
+                assert.deepEqual(res.body, updated);
+                assert.deepEqual(res.body.position, 'QB');
+                done();
+            })
+            .catch(done);
+    });
+
+
+    it('/DELETE - deletes a player', done => {
+        request
+            .delete(`/api/players/${antonio._id}`)
+            .then(res => {
+                const removed = res.body;
+                console.log(removed);
+                assert.deepEqual(res.body, removed);
+                done();
+            })
+            .catch(done);
+    });
+
 });

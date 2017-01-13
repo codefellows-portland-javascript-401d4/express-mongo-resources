@@ -7,7 +7,7 @@ const connection = require( '../lib/setup_mongoose');
 
 const app = require( '../lib/app' );
 
-describe( 'team', () => {
+describe( 'teams e2e', () => {
 
     before( done => {
         const CONNECTED = 1;
@@ -28,7 +28,8 @@ describe( 'team', () => {
     const request = chai.request(app);
 
     const snap = {
-        teamName: 'Oh Snap!'
+        teamName: 'Oh Snap!',
+        wins: 8
     };
 
     it( '/GET all', done => {
@@ -51,6 +52,7 @@ describe( 'team', () => {
     assert.ok( team._id );
     snap.__v = 0;
     snap._id = team._id;
+    console.log(snap);
     done();
 })
 			.catch( done );
@@ -59,7 +61,7 @@ describe( 'team', () => {
 
     it( '/GET by id', done => {
         request
-    .get( `/api/teams/${snap._id}` )
+            .get( `/api/teams/${snap._id}` )
 			.then( res => {
     const team = res.body;
     assert.deepEqual( team, snap );
@@ -68,18 +70,38 @@ describe( 'team', () => {
 			.catch( done );
     });
 
-//     it( '/GET all after post', done => {
-//         request
-// 			.get( '/api/teams' )
-// 			.then( res => {
-//     console.log(res.body);
-//     console.log( [snap] );
-//     assert.equal( res.body, [ snap ] );
-//
-//     done();
-// })
-// 			.catch( done );
-//     });
+    const updated = {
+        teamName: 'New Name',
+        wins: 0
+    };
+
+    it('/PUT - updates a team', done => {
+        request
+            .put(`/api/teams/${snap._id}`)
+            .send(updated)
+            .then(res => {
+                const updated = res.body;
+                console.log(updated);
+                assert.deepEqual(res.body, updated);
+                assert.deepEqual(res.body.wins, 0);
+                done();
+            })
+            .catch(done);
+    });
+
+
+    it('/DELETE - deletes a team', done => {
+        request
+            .delete(`/api/teams/${snap._id}`)
+            .then(res => {
+                const removed = res.body;
+                console.log(removed);
+                assert.deepEqual(res.body, removed);
+                done();
+            })
+            .catch(done);
+    });
+
 
     after( done => {
         connection.close( done );
