@@ -26,10 +26,12 @@ describe('Player model', () => {
 
     it('position must be a string', done => {
         const player = new Player();
+        // player.playerName = 'playerName';
         player.position = null;
 
 
         player.validate(err => {
+            // console.log(err);
             assert.isOk(err, 'expected error - incorrect data type on position');
             done();
         });

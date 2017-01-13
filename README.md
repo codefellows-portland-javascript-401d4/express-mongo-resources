@@ -21,3 +21,4 @@ The following are command line instructions for using the app.
     * POST request for '/teams' or '/players' - server writes response text and creates a new resource, whose contents are the parsed body of the request
     * PUT request for resource at '/teams/:id' or '/players/:id' - server writes response text and creates a new resource (if not already existing) or updates an existing resource. The updated contents of the resource are the parsed body of the request
     * DELETE request to '/teams' or '/players' - server writes response text and deletes resource
+    * non-CRUD endpoint - GET request to '/teams-with-no-losses', using a Mongoose .find to find and respond with all teams whose losses equal zero

@@ -27,10 +27,11 @@ describe('Team model', () => {
     it('wins must be a number', done => {
         const team = new Team( {
             teamName: 'team',
-            wins: 'two'
+            wins: "two"
         });
 
         team.validate(err => {
+            // console.log(err.errors);
             assert.isOk(err, 'expected error - incorrect data type on wins');
             done();
         });
